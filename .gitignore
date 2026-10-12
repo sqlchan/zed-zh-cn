@@ -1,0 +1,5 @@
+# 打包产物与暂存目录
+inno/
+target/
+*.zip
+*.exe

@@ -1,0 +1,809 @@
+diff --git a/Cargo.lock b/Cargo.lock
+index 2d7a5aa9e1..42cea7f930 100644
+--- a/Cargo.lock
++++ b/Cargo.lock
+@@ -19188,6 +19188,7 @@ dependencies = [
+  "settings",
+  "smallvec",
+  "strum 0.28.0",
++ "sys-locale",
+  "theme",
+  "theme_settings",
+  "ui_macros",
+diff --git a/crates/command_palette/src/command_palette.rs b/crates/command_palette/src/command_palette.rs
+index 4d4117755d..d280caa8cb 100644
+--- a/crates/command_palette/src/command_palette.rs
++++ b/crates/command_palette/src/command_palette.rs
+@@ -2,6 +2,7 @@ mod command_palette_settings;
+ mod persistence;
+ 
+ use std::{
++    borrow::Cow,
+     cmp::{self, Reverse},
+     collections::{HashMap, VecDeque},
+     sync::Arc,
+@@ -210,11 +211,30 @@ pub struct CommandPaletteDelegate {
+ }
+ 
+ struct Command {
++    /// 英文原文（`namespace: command name`）。
++    ///
++    /// **这个字段必须始终保持英文**：它既是命令历史数据库的主键
++    /// （`remove_command_history` / `write_command_invocation`），
++    /// 又是 `Action Invoked` 遥测事件的 `action` 字段值。翻译只发生在
++    /// 渲染和搜索时，见 [`Self::display_name`]。
+     name: SharedString,
+     action: Box<dyn Action>,
+     usage: Option<CommandUsage>,
+ }
+ 
++impl Command {
++    /// 命令在界面上显示的（可能是中文的）名字。
++    ///
++    /// 由 `name` 按需翻译而来，没有单独缓存：调用点都在每帧只跑一次的
++    /// 渲染代码里，而查表是两次哈希查找，代价可以忽略。
++    fn display_name(&self) -> Cow<'_, str> {
++        match ui::i18n::translate_command_name(&self.name) {
++            Some(zh) => Cow::Borrowed(zh),
++            None => Cow::Borrowed(self.name.as_ref()),
++        }
++    }
++}
++
+ #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
+ struct CommandUsage {
+     last_invoked: i64,
+@@ -378,6 +398,16 @@ impl CommandPaletteDelegate {
+         if !intercept_result.exclusive {
+             new_matches.append(&mut matches);
+         }
++        // 匹配位置是相对候选串（`search_text`）的字节偏移，而渲染用的是
++        // `display_text`，必须在这里换算一次：英文原文附在显示名之后，
++        // 命中那部分的位置已经越过显示名末尾，直接拿去渲染会越界。
++        for string_match in &mut new_matches {
++            let Some(command) = commands.get(string_match.candidate_id) else {
++                continue;
++            };
++            let display = command.display_name();
++            string_match.positions = remap_positions(&display, &string_match.positions);
++        }
+         self.commands = commands;
+         self.matches = new_matches;
+         if self.matches.is_empty() {
+@@ -612,7 +642,7 @@ impl PickerDelegate for CommandPaletteDelegate {
+                 let candidates = commands
+                     .iter()
+                     .enumerate()
+-                    .map(|(ix, command)| StringMatchCandidate::new(ix, &command.name))
++                    .map(|(ix, command)| search_candidate(ix, command))
+                     .collect::<Vec<_>>();
+ 
+                 let mut matches = fuzzy_nucleo::match_strings_async(
+@@ -784,7 +814,7 @@ impl PickerDelegate for CommandPaletteDelegate {
+                         .gap_2()
+                         .child(
+                             HighlightedLabel::new(
+-                                command.name.clone(),
++                                SharedString::from(command.display_name()),
+                                 matching_command.positions.clone(),
+                             )
+                             .truncate(),
+@@ -864,6 +894,41 @@ impl PickerDelegate for CommandPaletteDelegate {
+     }
+ }
+ 
++/// 渲染与匹配共用的命令显示名。
++fn display_text(command: &Command) -> Cow<'_, str> {
++    command.display_name()
++}
++
++/// 交给模糊匹配的串。界面上显示的是 [`display_text`]，为保证中文查询也能
++/// 命中，这里在它后面再接上英文原文，形如 `编辑器: 上移一行 editor: move line up`。
++fn search_text(command: &Command) -> String {
++    let display = display_text(command);
++    match ui::i18n::bilingual_search_text(&display, &command.name) {
++        Some(both) => both,
++        None => display.into_owned(),
++    }
++}
++
++/// 把 `search_text` 上的匹配位置换算成 `display_text` 上的位置。
++///
++/// 两者是前缀关系（显示名在前，英文原文附在其后），所以落在显示名范围内的
++/// 位置原样保留，附在后面的英文部分则不产生高亮——否则 `HighlightedLabel`
++/// 会拿到越过字符串末尾的下标。位置必须落在字符边界上：模糊匹配按下标深入
++/// 小写副本，遇到 `İ` 这种展开成多个字符的情况就会给出非边界位置。
++fn remap_positions(text: &str, positions: &[usize]) -> Vec<usize> {
++    let mut out: Vec<usize> = positions
++        .iter()
++        .copied()
++        .filter(|&ix| text.is_char_boundary(ix))
++        .collect();
++    out.dedup();
++    out
++}
++
++fn search_candidate(ix: usize, command: &Command) -> StringMatchCandidate {
++    StringMatchCandidate::new(ix, &search_text(command))
++}
++
+ pub fn humanize_action_name(name: &str) -> String {
+     let chars = name.chars().collect::<Vec<_>>();
+     let capacity = name.len() + chars.iter().filter(|c| c.is_uppercase()).count();
+diff --git a/crates/editor/src/editor.rs b/crates/editor/src/editor.rs
+index 3839a9bb68..e6c23eee84 100644
+--- a/crates/editor/src/editor.rs
++++ b/crates/editor/src/editor.rs
+@@ -3302,8 +3302,13 @@ impl Editor {
+         window: &mut Window,
+         cx: &mut Context<Self>,
+     ) {
++        // 界面汉化：placeholder 是编辑器自行绘制文本、不走 `Label::new`，
++        // 所以在这个入口处查表。placeholder 必然是 UI 文案而非用户数据。
++        let placeholder_text =
++            ui::i18n::translate(placeholder_text).unwrap_or(std::borrow::Cow::Borrowed(placeholder_text));
++
+         let multibuffer = cx
+-            .new(|cx| MultiBuffer::singleton(cx.new(|cx| Buffer::local(placeholder_text, cx)), cx));
++            .new(|cx| MultiBuffer::singleton(cx.new(|cx| Buffer::local(placeholder_text.as_ref(), cx)), cx));
+ 
+         let style = window.text_style();
+ 
+diff --git a/crates/keymap_editor/src/keymap_editor.rs b/crates/keymap_editor/src/keymap_editor.rs
+index cf3f4e7ab0..7512319223 100644
+--- a/crates/keymap_editor/src/keymap_editor.rs
++++ b/crates/keymap_editor/src/keymap_editor.rs
+@@ -1743,13 +1743,23 @@ struct HumanizedActionNameCache {
+     cache: HashMap<&'static str, SharedString>,
+ }
+ 
++/// 界面汉化：把 action 名转成界面上显示的名字。
++///
++/// `humanize_action_name` 产出的是 `editor: add selection above` 这种英文形式，
++/// 中文译文在命令面板专用词典里（`ui::i18n::translate_command_name`）。
++/// 未收录时原样返回英文，不出现中英混排。
++fn humanized_action_name(action_name: &str) -> SharedString {
++    let name = command_palette::humanize_action_name(action_name);
++    match ui::i18n::translate_command_name(&name) {
++        Some(zh) => zh.into(),
++        None => name.into(),
++    }
++}
++
+ impl HumanizedActionNameCache {
+     fn new(cx: &App) -> Self {
+         let cache = HashMap::from_iter(cx.all_action_names().iter().map(|&action_name| {
+-            (
+-                action_name,
+-                command_palette::humanize_action_name(action_name).into(),
+-            )
++            (action_name, humanized_action_name(action_name))
+         }));
+         Self { cache }
+     }
+@@ -2571,7 +2581,7 @@ impl KeybindingEditorModal {
+ 
+             let humanized_names: HashMap<&'static str, SharedString> = actions
+                 .iter()
+-                .map(|&name| (name, command_palette::humanize_action_name(name).into()))
++                .map(|&name| (name, humanized_action_name(name)))
+                 .collect();
+ 
+             let action_name_to_static: HashMap<String, &'static str> = actions
+@@ -2872,8 +2882,7 @@ impl KeybindingEditorModal {
+             .get_selected_action_name(cx)
+             .map_err(InputError::error)?;
+ 
+-        let humanized_action_name: SharedString =
+-            command_palette::humanize_action_name(action_name).into();
++        let humanized_action_name: SharedString = humanized_action_name(action_name);
+ 
+         let action_information = ActionInformation::new(
+             action_name,
+diff --git a/crates/ui/Cargo.toml b/crates/ui/Cargo.toml
+index e1a9812cec..2510b4eea9 100644
+--- a/crates/ui/Cargo.toml
++++ b/crates/ui/Cargo.toml
+@@ -30,6 +30,7 @@ theme.workspace = true
+ ui_macros.workspace = true
+ web-time.workspace = true
+ gpui_util.workspace = true
++sys-locale.workspace = true
+ 
+ [dev-dependencies]
+ gpui = { workspace = true, features = ["test-support"] }
+diff --git a/crates/ui/src/components/label/highlighted_label.rs b/crates/ui/src/components/label/highlighted_label.rs
+index 5d15d4858e..f260d285fe 100644
+--- a/crates/ui/src/components/label/highlighted_label.rs
++++ b/crates/ui/src/components/label/highlighted_label.rs
+@@ -18,7 +18,16 @@ impl HighlightedLabel {
+     /// Characters are identified by UTF-8 byte position.
+     #[track_caller]
+     pub fn new(label: impl Into<SharedString>, mut highlight_indices: Vec<usize>) -> Self {
+-        let label = label.into();
++        let original = label.into();
++
++        // 界面汉化：highlight_indices 是**英文原文**的字节偏移，译文长度不同，
++        // 偏移必然对不上（轻则高亮错位，重则索引落在字符中间触发下面的
++        // debug_panic，release 下甚至越界）。所以只有在译文与原文一致时才保留
++        // 高亮，一旦真的翻译了就清空：丢掉高亮总好过画错或者崩溃。
++        let label = crate::i18n::translate_owned(original.clone());
++        if label.as_ref() != original.as_ref() {
++            highlight_indices.clear();
++        }
+ 
+         if let Some(index) = highlight_indices
+             .iter()
+@@ -44,20 +53,26 @@ impl HighlightedLabel {
+         label: impl Into<SharedString>,
+         highlight_ranges: Vec<Range<usize>>,
+     ) -> Self {
+-        let label = label.into();
+-        let highlight_indices = highlight_ranges
++        let original = label.into();
++        let mut highlight_indices: Vec<usize> = highlight_ranges
+             .iter()
+             .flat_map(|range| {
+                 let mut indices = Vec::new();
+                 let mut index = range.start;
+                 while index < range.end {
+                     indices.push(index);
+-                    index += label[index..].chars().next().map_or(0, |c| c.len_utf8());
++                    index += original[index..].chars().next().map_or(0, |c| c.len_utf8());
+                 }
+                 indices
+             })
+             .collect();
+ 
++        // 界面汉化：与 `new` 同理——这些范围指向英文原文的字节位置，翻译后失效。
++        let label = crate::i18n::translate_owned(original.clone());
++        if label.as_ref() != original.as_ref() {
++            highlight_indices.clear();
++        }
++
+         Self {
+             base: LabelLike::new(),
+             label,
+diff --git a/crates/ui/src/components/label/label.rs b/crates/ui/src/components/label/label.rs
+index 22dc262877..8371082649 100644
+--- a/crates/ui/src/components/label/label.rs
++++ b/crates/ui/src/components/label/label.rs
+@@ -1,6 +1,7 @@
+ use std::borrow::Cow;
+ use std::ops::Range;
+ 
++use crate::i18n::translate_owned;
+ use crate::utils::replace_control_characters;
+ use crate::{LabelLike, prelude::*};
+ use gpui::{HighlightStyle, StyleRefinement, StyledText, TextAlign};
+@@ -53,7 +54,9 @@ impl Label {
+     pub fn new(label: impl Into<SharedString>) -> Self {
+         Self {
+             base: LabelLike::new(),
+-            label: label.into(),
++            // 界面汉化：命中字典则替换为中文，未命中原样保留。
++            // 大多数 UI 文案（按钮、菜单项、面板标题等）都经由这里渲染。
++            label: translate_owned(label.into()),
+             render_code_spans: false,
+         }
+     }
+@@ -67,7 +70,8 @@ impl Label {
+ 
+     /// Sets the text of the [`Label`].
+     pub fn set_text(&mut self, text: impl Into<SharedString>) {
+-        self.label = text.into();
++        // 界面汉化：与 `new` 保持一致，否则部分动态更新的文案会漏译。
++        self.label = translate_owned(text.into());
+     }
+ 
+     /// Truncates the label from the start, keeping the end visible.
+diff --git a/crates/ui/src/components/tooltip.rs b/crates/ui/src/components/tooltip.rs
+index 82e7d9b111..96b6fd30e1 100644
+--- a/crates/ui/src/components/tooltip.rs
++++ b/crates/ui/src/components/tooltip.rs
+@@ -27,7 +27,9 @@ impl From<SharedString> for Title {
+ impl RenderOnce for Title {
+     fn render(self, window: &mut Window, cx: &mut App) -> impl gpui::IntoElement {
+         match self {
+-            Title::Str(title) => title.into_any_element(),
++            // 界面汉化：Tooltip 的标题是直接转元素的、不走 Label::new，
++            // 所以这里单独查表，否则所有 tooltip 都会保持英文。
++            Title::Str(title) => crate::i18n::translate_owned(title).into_any_element(),
+             Title::Callback(element) => element(window, cx),
+         }
+     }
+diff --git a/crates/ui/src/i18n.rs b/crates/ui/src/i18n.rs
+new file mode 100644
+index 0000000000..7cd11434bb
+--- /dev/null
++++ b/crates/ui/src/i18n.rs
+@@ -0,0 +1,431 @@
++//! Zed 界面汉化（i18n）模块。
++//!
++//! # 设计目标
++//!
++//! Zed 上游没有任何 UI 本地化框架，界面文案全部硬编码英文。本模块提供一层
++//! 轻量的「运行时字典」，让汉化**只依赖框架层的少数几个改动点**，业务代码零改动。
++//!
++//! 这样设计的原因：Zed 上游更新频繁，任何散落在业务代码里的改动都会在
++//! `git pull` 后产生冲突。把全部逻辑和译文收敛到本文件 + 词典数据文件 +
++//! `Label::new`，升级时冲突面最小。
++//!
++//! # 词典放在哪里
++//!
++//! 译文全部在仓库根的 `localization/i18n_dict.tsv`，格式为 `英文原文<TAB>中文译文`。
++//! 用 `include_str!` 嵌进二进制，启动时解析成哈希表。**新增译文只需要编辑那个
++//! 纯文本文件**，不必碰 Rust 代码，也就不会因为转义、引号写错而编译失败。
++//!
++//! 词典刻意放在 crate 之外：汉化涉及的所有东西——两个词典、扫描/打包脚本、
++//! 说明文档——都在 `localization/` 一个目录里，`git pull` 后一眼能看清自己改了
++//! 什么，升级时也只需要看那一处。代价是 `crates/ui` 不再是自包含的 crate
++//! （`cargo package` 会失败），本项目是 fork、不发布，可以接受。
++//!
++//! # 接入点
++//!
++//! 界面文案绝大多数最终都会经由 [`crate::Label::new`] 渲染（`Button`、菜单项、
++//! 设置项、面板标题等在内部都调用它），因此在那一处查表即可覆盖大部分 UI。
++//! [`crate::HighlightedLabel`] 覆盖命令面板等带高亮的列表项。
++//!
++//! # 只翻译「静态字面量」，不动用户数据
++//!
++//! 字典是**完整字符串精确匹配**，不分子串、不做模糊匹配。文件名、提交信息、
++//! 搜索结果等运行时数据几乎不可能恰好等于某个 UI 短语，因此不会被误译。
++//!
++//! # 动态拼接文案：模板
++//!
++//! 上游有大量文案是在渲染时才拼出来的（`format!("Close {} Dock", pos)`），
++//! 精确匹配永远命中不了。这类文案在 TSV 里写成含 `{}` 的**模板**，
++//! 例如 `Close {} Dock<TAB>关闭{}停靠栏`，匹配时把占位符位置的原样内容
++//! 填回去。同样是「只加数据、不改代码」，且以后上游新增同类文案只需加一行。
++
++use std::borrow::Cow;
++use std::collections::HashMap;
++use std::sync::OnceLock;
++
++/// 词典数据文件。每行 `英文原文<TAB>中文译文`，`#` 开头为注释。
++///
++/// 放在仓库根的 `localization/` 下（与脚本、文档同处一个目录），跨 crate 引用。
++const DICT_TSV: &str = include_str!("../../../localization/i18n_dict.tsv");
++
++/// 命令面板专用词典，见 [`translate_command_name`]。
++const COMMAND_DICT_TSV: &str = include_str!("../../../localization/i18n_commands.tsv");
++
++/// 界面语言。
++#[derive(Debug, Clone, Copy, PartialEq, Eq)]
++pub enum UiLanguage {
++    /// 英文，不做任何替换。
++    English,
++    /// 简体中文。
++    Chinese,
++}
++
++static LANGUAGE: OnceLock<UiLanguage> = OnceLock::new();
++
++/// 返回当前界面语言。结果只计算一次并缓存。
++///
++/// 判定优先级：
++/// 1. 环境变量 `ZED_UI_LANGUAGE`（`en` / `zh` / `zh-CN` 均可）；
++/// 2. 系统区域设置（Windows 中文系统自动为中文）；
++/// 3. 兜底为英文。
++pub fn ui_language() -> UiLanguage {
++    *LANGUAGE.get_or_init(|| {
++        if let Ok(value) = std::env::var("ZED_UI_LANGUAGE") {
++            return if is_chinese_locale(&value) {
++                UiLanguage::Chinese
++            } else {
++                UiLanguage::English
++            };
++        }
++
++        match sys_locale::get_locale() {
++            Some(locale) if is_chinese_locale(&locale) => UiLanguage::Chinese,
++            _ => UiLanguage::English,
++        }
++    })
++}
++
++/// 当前是否启用中文界面。
++#[inline]
++pub fn is_chinese() -> bool {
++    ui_language() == UiLanguage::Chinese
++}
++
++fn is_chinese_locale(locale: &str) -> bool {
++    locale.to_ascii_lowercase().starts_with("zh")
++}
++
++/// 把界面英文文案翻译为中文。
++///
++/// 命中返回中文（静态词条零拷贝借用，模板词条返回新串）；
++/// 未命中或未启用中文时返回 `None`，调用方应保留原文。
++#[inline]
++pub fn translate(text: &str) -> Option<Cow<'static, str>> {
++    if !is_chinese() {
++        return None;
++    }
++    lookup(text)
++}
++
++/// [`translate`] 的 `SharedString` 版本。
++///
++/// 未命中时原样返回，不做多余分配。
++pub fn translate_owned(text: gpui::SharedString) -> gpui::SharedString {
++    match translate(text.as_ref()) {
++        Some(zh) => gpui::SharedString::from(zh),
++        None => text,
++    }
++}
++
++/// 给已经翻译过的显示文案补上英文原文，组成「中英双语」搜索串。
++///
++/// 汉化后界面上显示的是中文，但用户仍然会按英文名去搜，所以命令面板交给
++/// 模糊匹配的串必须是 `中文译文 英文原文`。[`translate_command_name`] 命中的
++/// 命令名传入这里即可两种语言都搜得到。
++///
++/// 未启用中文或没命中词条时返回 `None`，调用方沿用原文——特别注意**不要**把
++/// 「已经是用户数据」的串传进来再拼一遍，重复拼接没有意义。
++pub fn bilingual_search_text(display: &str, english: &str) -> Option<String> {
++    if !is_chinese() || display == english {
++        return None;
++    }
++    Some(format!("{display} {english}"))
++}
++
++/// 翻译命令面板里的命令显示名（形如 `editor: add selection above`）。
++///
++/// 这类名字由 action 的类型名自动推导而来（`humanize_action_name`），
++/// 源码里根本没有对应字面量，无法纳入通用词典扫描。译文放在
++/// [`COMMAND_DICT_TSV`] 里，**刻意与通用词典分开**：命令名由单个小写单词组成
++/// （`editor`、`copy`、`cancel`），若混进通用词典，项目面板里同名的文件或
++/// 文件夹会被一并译成中文。本函数拿到的必定是 action 名，不存在这个风险。
++pub fn translate_command_name(display_name: &str) -> Option<&'static str> {
++    if !is_chinese() {
++        return None;
++    }
++    command_dict().get(display_name).copied()
++}
++
++/// 命令面板词典（惰性构建，全进程一份）。
++fn command_dict() -> &'static HashMap<&'static str, &'static str> {
++    static COMMANDS: OnceLock<HashMap<&'static str, &'static str>> = OnceLock::new();
++    COMMANDS.get_or_init(|| {
++        let mut map = HashMap::new();
++        for line in COMMAND_DICT_TSV.lines() {
++            let line = line.trim_end_matches('\r');
++            if line.is_empty() || line.starts_with('#') {
++                continue;
++            }
++            let Some((en, zh)) = line.split_once('\t') else {
++                debug_assert!(false, "i18n_commands.tsv 缺少制表符: {line}");
++                continue;
++            };
++            if map.insert(en, zh).is_some() {
++                debug_assert!(false, "i18n_commands.tsv 词条重复: {en}");
++            }
++        }
++        map
++    })
++}
++
++/// 英文原文到中文译文的字典（惰性构建，全进程一份）。
++fn dict() -> &'static HashMap<&'static str, &'static str> {
++    static DICT: OnceLock<HashMap<&'static str, &'static str>> = OnceLock::new();
++    DICT.get_or_init(|| {
++        let mut map = HashMap::new();
++        for line in DICT_TSV.lines() {
++            let line = line.trim_end_matches('\r');
++            if line.is_empty() || line.starts_with('#') {
++                continue;
++            }
++            let Some((en, zh)) = line.split_once('\t') else {
++                debug_assert!(false, "i18n_dict.tsv 缺少制表符: {line}");
++                continue;
++            };
++            if map.insert(en, zh).is_some() {
++                debug_assert!(false, "i18n_dict.tsv 词条重复: {en}");
++            }
++        }
++        map
++    })
++}
++
++fn lookup(text: &str) -> Option<Cow<'static, str>> {
++    let dict = dict();
++    if let Some(zh) = dict.get(text) {
++        return Some(Cow::Borrowed(zh));
++    }
++
++    // 有些调用点会先 to_ascii_uppercase() 再渲染（如欢迎页的分组标题
++    // "Get Started" → "GET STARTED"），这里用大写形式再查一次。
++    // 只在原文含小写字母时才需要（已是大写的串上面就命中了）。
++    if text.bytes().any(|b| b.is_ascii_lowercase()) {
++        let upper = upper_dict();
++        if let Some(zh) = upper.get(text) {
++            return Some(Cow::Borrowed(zh));
++        }
++    }
++
++    template_match(text)
++}
++
++/// 大写形式的词典，供 `to_ascii_uppercase()` 后的调用点回退命中。
++fn upper_dict() -> &'static HashMap<String, &'static str> {
++    static UPPER: OnceLock<HashMap<String, &'static str>> = OnceLock::new();
++    UPPER.get_or_init(|| {
++        dict().iter()
++            .filter(|(en, _)| en.bytes().any(|b| b.is_ascii_lowercase()))
++            .map(|(en, zh)| (en.to_ascii_uppercase(), *zh))
++            .collect()
++    })
++}
++
++/// 模板词条：形如 `Close {} Dock` → `关闭{}停靠栏`。
++struct Template {
++    /// 以 `{}` 切分后的原文片段，比占位符多一个。
++    parts: Vec<&'static str>,
++    zh: &'static str,
++}
++
++static TEMPLATES: OnceLock<Vec<Template>> = OnceLock::new();
++
++/// 词典里所有含 `{}` 的词条，按占位符个数降序（更具体的优先匹配）。
++fn templates() -> &'static [Template] {
++    TEMPLATES.get_or_init(|| {
++        let mut list: Vec<Template> = dict()
++            .iter()
++            .filter(|(en, _)| en.contains("{}"))
++            .map(|(en, zh)| Template {
++                parts: en.split("{}").collect(),
++                zh,
++            })
++            .collect();
++        list.sort_by_key(|t| std::cmp::Reverse(t.parts.len()));
++        list
++    })
++}
++
++/// 用模板匹配动态拼接出来的文案，未命中返回 `None`。
++fn template_match(text: &str) -> Option<Cow<'static, str>> {
++    templates()
++        .iter()
++        .find_map(|tpl| match_parts(text, &tpl.parts).map(|values| (tpl, values)))
++        .map(|(tpl, values)| Cow::Owned(fill_template(tpl.zh, &values)))
++}
++
++/// 判断 `text` 是否形如 `parts[0] + 任意 + parts[1] + ...`，
++/// 是则返回各占位符位置的原样内容（借用 `text`，不分配）。
++fn match_parts<'a>(text: &'a str, parts: &[&str]) -> Option<Vec<&'a str>> {
++    let placeholders = parts.len().checked_sub(1)?;
++    if placeholders == 0 {
++        return None;
++    }
++
++    let mut values = Vec::with_capacity(placeholders);
++    let mut rest = text.strip_prefix(parts[0])?;
++
++    // 中间片段：逐个查找，前一段到它之间的内容就是占位符的值。
++    for part in &parts[1..placeholders] {
++        let idx = rest.find(part)?;
++        values.push(&rest[..idx]);
++        rest = &rest[idx + part.len()..];
++    }
++
++    // 末尾片段必须恰好收尾，避免把更长的句子误配。
++    let tail = rest.strip_suffix(parts[placeholders])?;
++    values.push(tail);
++    Some(values)
++}
++
++/// 把原文片段填回译文的 `{}` 位置。
++fn fill_template(zh: &str, values: &[&str]) -> String {
++    let mut out = String::with_capacity(zh.len() + values.iter().map(|v| v.len()).sum::<usize>());
++    let mut values = values.iter();
++    for (i, part) in zh.split("{}").enumerate() {
++        if i > 0 {
++            out.push_str(values.next().copied().unwrap_or(""));
++        }
++        out.push_str(part);
++    }
++    out
++}
++
++#[cfg(test)]
++mod tests {
++    use super::*;
++
++    #[test]
++    fn locale_detection() {
++        assert!(is_chinese_locale("zh-CN"));
++        assert!(is_chinese_locale("zh-Hans"));
++        assert!(is_chinese_locale("ZH"));
++        assert!(!is_chinese_locale("en-US"));
++        assert!(!is_chinese_locale("ja-JP"));
++    }
++
++    #[test]
++    fn dict_is_well_formed() {
++        // 词典已解析且非空
++        assert!(dict().len() > 100, "词典条目异常少：{}", dict().len());
++        // 键值都不应为空白
++        for (en, zh) in dict() {
++            assert!(!en.trim().is_empty(), "存在空的英文原文");
++            assert!(!zh.trim().is_empty(), "词条 {en:?} 的译文为空");
++            assert!(!en.contains('\t'), "英文原文含制表符: {en:?}");
++        }
++    }
++
++    #[test]
++    fn lookup_menus() {
++        assert_eq!(lookup("File").as_deref(), Some("文件"));
++        assert_eq!(lookup("Open Folder...").as_deref(), Some("打开文件夹…"));
++        assert_eq!(lookup("Zoom In").as_deref(), Some("放大"));
++        // 有些调用点先 to_ascii_uppercase() 再渲染，应能回退命中
++        assert_eq!(lookup("GET STARTED").as_deref(), Some("快速开始"));
++        assert_eq!(lookup("Get Started").as_deref(), Some("快速开始"));
++        // 用户数据不应命中字典（即使内容恰好是英文单词）
++        assert_eq!(lookup("main.rs"), None);
++        assert_eq!(lookup("src"), None);
++        assert_eq!(lookup("open"), None);
++    }
++
++    #[test]
++    fn lookup_templates() {
++        let t = |s: &str| lookup(s).map(|v| v.into_owned());
++
++        // 高频组合有精确词条，优先于模板命中，结果更通顺
++        assert_eq!(t("Close Left Dock").as_deref(), Some("关闭左侧停靠栏"));
++        assert_eq!(t("Close Right Dock").as_deref(), Some("关闭右侧停靠栏"));
++        assert_eq!(t("Toggle Changes Tab").as_deref(), Some("切换「更改」标签页"));
++        assert_eq!(t("Stage Folder").as_deref(), Some("暂存文件夹"));
++
++        // 未单独收录的组合走模板：变量原样保留（用户数据不翻译）
++        assert_eq!(t("Close Foo Dock").as_deref(), Some("关闭Foo停靠栏"));
++        assert_eq!(t("New Rust Thread").as_deref(), Some("新建Rust会话"));
++
++        // 模板不能过度匹配：前缀相同但结尾不同时不应命中
++        assert_eq!(t("Close Left Dock and More"), None);
++        assert_eq!(t("Close Left Docky"), None);
++        assert_eq!(t("This is a Dock"), None);
++    }
++
++    #[test]
++    fn bilingual_search_text_keeps_both_languages() {
++        // 汉化后界面上是中文，但用户仍会按英文名搜索，
++        // 所以匹配串必须中英都含。
++        let s = bilingual_search_text("编辑器: 在上方添加光标", "editor: add selection above")
++            .expect("译文与原文不同，应拼接");
++        assert!(s.contains("在上方添加光标"), "应含中文: {s}");
++        assert!(s.contains("editor: add selection above"), "应含英文原文: {s}");
++
++        // 没有译文（显示串与原文相同）时不拼接，避免无谓分配
++        assert_eq!(bilingual_search_text("main.rs", "main.rs"), None);
++    }
++
++    #[test]
++    fn command_names_use_their_own_dictionary() {
++        // 命令名单独成典，查表拿到的就是完整译文
++        assert_eq!(
++            translate_command_name("editor: add selection above"),
++            Some("编辑器: 在上方添加光标")
++        );
++        // 未收录的整条命令不翻译（宁可保持英文，也不出中英混排）
++        assert_eq!(translate_command_name("editor: this command does not exist"), None);
++        assert_eq!(translate_command_name("no such namespace: copy"), None);
++        // 不是命令名格式的串一概不碰
++        assert_eq!(translate_command_name("main.rs"), None);
++    }
++
++    #[test]
++    fn command_dictionary_never_leaks_into_the_ui_dictionary() {
++        // 命令名由单个小写单词组成（editor / copy / cancel），一旦混进通用词典，
++        // 项目面板里同名的文件或文件夹就会被译成中文。这条测试把它钉死。
++        for key in ["editor", "copy", "cancel", "outline", "search", "terminal", "task"] {
++            assert!(
++                dict().get(key).is_none(),
++                "{key:?} 不应出现在通用词典里（会误译同名文件）"
++            );
++        }
++        // 反向确认：同一个词在命令词典里是存在的，即分离确实生效了
++        assert!(
++            command_dict()
++                .keys()
++                .any(|k| k.starts_with("editor: ")),
++            "命令词典应包含 editor 命名空间的条目"
++        );
++    }
++
++    #[test]
++    fn translate_owned_matches_lookup() {
++        // Tooltip 标题、Label::set_text 都走这条路径，与 lookup 必须一致
++        assert_eq!(
++            translate_owned("Close Right Dock".into()).as_ref(),
++            "关闭右侧停靠栏"
++        );
++        assert_eq!(translate_owned("Toggle Changes Tab".into()).as_ref(), "切换「更改」标签页");
++        // 未命中原样返回
++        assert_eq!(translate_owned("config.py".into()).as_ref(), "config.py");
++    }
++
++    #[test]
++    fn template_parts_split_on_placeholder() {
++        let parts: Vec<&str> = "Close {} Dock".split("{}").collect();
++        assert_eq!(parts, vec!["Close ", " Dock"]);
++
++        let values = match_parts("Close Left Dock", &parts).expect("应匹配");
++        assert_eq!(values, vec!["Left"]);
++
++        // 两个占位符
++        let parts2: Vec<&str> = "Moved {} to {}".split("{}").collect();
++        let values2 = match_parts("Moved a.txt to b.txt", &parts2).expect("应匹配");
++        assert_eq!(values2, vec!["a.txt", "b.txt"]);
++
++        // 多个分隔符时按第一个切分，剩余部分整体作为末段
++        let values3 = match_parts("Moved to/x to y", &parts2).expect("应匹配");
++        assert_eq!(values3, vec!["to/x", "y"]);
++
++        // 不含占位符的模板不参与匹配
++        assert_eq!(match_parts("File", &["File"]), None);
++        // 前缀不符
++        assert_eq!(match_parts("Open Left Dock", &parts), None);
++    }
++}
+diff --git a/crates/ui/src/styles/typography.rs b/crates/ui/src/styles/typography.rs
+index 6411504d6c..c402ec96ec 100644
+--- a/crates/ui/src/styles/typography.rs
++++ b/crates/ui/src/styles/typography.rs
+@@ -227,7 +227,8 @@ impl Headline {
+     pub fn new(text: impl Into<SharedString>) -> Self {
+         Self {
+             size: HeadlineSize::default(),
+-            text: text.into(),
++            // 界面汉化：Headline 直接渲染文本、不走 Label::new，所以这里也要查表。
++            text: crate::i18n::translate_owned(text.into()),
+             color: Color::default(),
+         }
+     }
+diff --git a/crates/ui/src/ui.rs b/crates/ui/src/ui.rs
+index 17e707f11b..8941773223 100644
+--- a/crates/ui/src/ui.rs
++++ b/crates/ui/src/ui.rs
+@@ -9,6 +9,7 @@
+ 
+ pub mod component_prelude;
+ mod components;
++pub mod i18n;
+ pub mod prelude;
+ mod styles;
+ mod traits;
+diff --git a/crates/which_key/src/which_key.rs b/crates/which_key/src/which_key.rs
+index 1160543187..929f0679f6 100644
+--- a/crates/which_key/src/which_key.rs
++++ b/crates/which_key/src/which_key.rs
+@@ -93,8 +93,15 @@ fn collect_bindings_for_pending_input(
+ 
+ fn binding_label(action: &dyn Action) -> SharedString {
+     match action.as_any().downcast_ref::<zed_actions::Spawn>() {
++        // 任务名是用户数据（往往就是文件名），保持原样。
+         Some(zed_actions::Spawn::ByName { task_name, .. }) => task_name.clone().into(),
+-        _ => command_palette::humanize_action_name(action.name()).into(),
++        _ => {
++            let name = command_palette::humanize_action_name(action.name());
++            match ui::i18n::translate_command_name(&name) {
++                Some(zh) => zh.into(),
++                None => name.into(),
++            }
++        }
+     }
+ }
+ 
+diff --git a/docs/src/SUMMARY.md b/docs/src/SUMMARY.md
+index e1fb975e89..4360c91ebc 100644
+--- a/docs/src/SUMMARY.md
++++ b/docs/src/SUMMARY.md
+@@ -232,5 +232,6 @@
+   - [Performance](./performance.md)
+   - [UI/UX Checklist](./development/ui-checklist.md)
+   - [Glossary](./development/glossary.md)
++  - [中文汉化 (Localization)](../../localization/docs/localization.md)
+ - [Release Notes](./development/release-notes.md)
+ - [Debugging Crashes](./development/debugging-crashes.md)

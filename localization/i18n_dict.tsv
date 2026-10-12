@@ -1,0 +1,3437 @@
+# Zed 界面汉化词典
+#
+# 格式：每行 “英文原文<TAB>中文译文”，以制表符分隔。
+#   - 以 # 开头的行是注释，空行忽略。
+#   - 英文原文必须与界面上显示的文本**逐字一致**（含大小写、空格、标点、
+#     省略号 …、末尾的 ... 等），否则匹配不到。
+#   - 匹配是完整字符串精确匹配，不做子串/模糊匹配，因此文件名、提交信息、
+#     搜索关键词等运行时数据不会被误译。
+#   - 同一个英文原文不要出现两次。
+#
+# 动态拼接文案（模板）：
+#   - 界面上有些文案是运行时拼出来的，例如 `format!("Close {} Dock", pos)`
+#     在界面上显示为 “Close Left Dock”。这类写法用**模板**词条匹配：
+#         英文原文里保留 {} 作占位符，译文里也用 {} 表示填入位置。
+#     例如：  Close {} Dock<TAB>关闭{}停靠栏
+#   - 匹配规则：整串必须「前缀 + 任意内容 + 后缀」完全吻合（首尾都锚定），
+#     占位符位置的内容原样保留、不翻译。因此 "Close Left Dock and More"
+#     不会误配。
+#   - 占位符内容通常是别的 UI 词（如 "Left"），请把那些词本身也单独收录，
+#     这样模板参数先被翻译、填进去时已是中文。
+
+# ===== 应用菜单 =====
+
+# ===== Zed =====
+About Zed	关于 Zed
+Check for Updates	检查更新
+Open Settings	打开设置
+Open Settings File	打开设置文件
+Open Project Settings	打开项目设置
+Open Project Settings File	打开项目设置文件
+Open Default Settings	打开默认设置
+Open Keymap	打开快捷键映射
+Open Keymap File	打开快捷键映射文件
+Open Default Key Bindings	打开默认快捷键绑定
+Select Theme...	选择主题…
+Select Icon Theme...	选择图标主题…
+Install CLI	安装命令行工具
+Hide Zed	隐藏 Zed
+Hide Others	隐藏其他
+Show All	全部显示
+Quit Zed	退出 Zed
+
+# ===== File =====
+New	新建
+New Window	新建窗口
+Open File...	打开文件…
+Open…	打开…
+Open Folder...	打开文件夹…
+Open Recent…	最近打开…
+Open Remote…	打开远程…
+Add Folder to Project…	添加文件夹到项目…
+Save	保存
+Save As…	另存为…
+Save All	全部保存
+Close Editor	关闭编辑器
+Close Project	关闭项目
+Close Window	关闭窗口
+
+# ===== Edit =====
+Undo	撤销
+Redo	重做
+Cut	剪切
+Copy and Trim	复制并去除首尾空白
+Find	查找
+Find in Project	在项目中查找
+Toggle Line Comment	切换行注释
+
+# ===== Selection =====
+Select All	全选
+Expand Selection	扩大选区
+Shrink Selection	缩小选区
+Select Next Sibling	选择下一个同级节点
+Select Previous Sibling	选择上一个同级节点
+Add Cursor Above	在上方添加光标
+Add Cursor Below	在下方添加光标
+Select Next Occurrence	选择下一个匹配项
+Select Previous Occurrence	选择上一个匹配项
+Select All Occurrences	选择所有匹配项
+Move Line Up	上移行
+Move Line Down	下移行
+Duplicate Selection	复制选区
+
+# ===== View =====
+Zoom In	放大
+Zoom Out	缩小
+Reset Zoom	重置缩放
+Reset All Zoom	重置全部缩放
+Toggle Left Dock	切换左侧停靠栏
+Toggle Right Dock	切换右侧停靠栏
+Toggle Bottom Dock	切换底部停靠栏
+Toggle All Docks	切换全部停靠栏
+Editor Layout	编辑器布局
+Split Up	向上拆分
+Split Down	向下拆分
+Split Left	向左拆分
+Split Right	向右拆分
+Outline Panel	大纲面板
+Terminal Panel	终端面板
+Debugger Panel	调试器面板
+Agent Panel	智能体面板
+Git Panel	Git 面板
+Diagnostics	诊断
+Toggle GPUI Inspector	切换 GPUI 检查器
+
+# ===== Go =====
+Back	返回
+Forward	前进
+Command Palette...	命令面板…
+Go to File...	转到文件…
+Go to Symbol in Editor...	转到编辑器中的符号…
+Go to Line/Column...	转到行/列…
+Go to Definition	转到定义
+Go to Declaration	转到声明
+Go to Type Definition	转到类型定义
+Find All References	查找所有引用
+Show Incoming Calls	显示调用方
+Show Outgoing Calls	显示被调用方
+Next Problem	下一个问题
+Previous Problem	上一个问题
+
+# ===== Run =====
+Spawn Task	运行任务
+Start Debugger	启动调试器
+Edit tasks.json…	编辑 tasks.json…
+Edit debug.json…	编辑 debug.json…
+Continue	继续
+Step Over	单步跳过
+Step Into	单步进入
+Step Out	单步跳出
+Toggle Breakpoint	切换断点
+Edit Breakpoint	编辑断点
+Clear All Breakpoints	清除所有断点
+
+# ===== Window =====
+Minimize	最小化
+Zoom	缩放
+
+# ===== Help =====
+View Release Notes Locally	查看本地发行说明
+View Telemetry	查看遥测数据
+View Dependency Licenses	查看依赖许可证
+Show Welcome	显示欢迎页
+File Bug Report...	提交缺陷报告…
+Request Feature...	请求新功能…
+Email Us...	给我们发邮件…
+Documentation	文档
+Zed Repository	Zed 代码仓库
+Zed Twitter	Zed 推特
+Join the Team	加入团队
+Open Application Menu	打开应用菜单
+
+# ===== 顶级菜单名与通用分组名 =====
+Zed	Zed
+File	文件
+Edit	编辑
+Selection	选择
+View	视图
+Go	转到
+Run	运行
+Window	窗口
+Help	帮助
+Settings	设置
+Extensions	扩展
+Themes	主题
+Keymap	快捷键映射
+Account	账户
+
+# ===== 通用按钮 =====
+OK	确定
+Cancel	取消
+Yes	是
+No	否
+Close	关闭
+Delete	删除
+Remove	移除
+Rename	重命名
+Create	创建
+Add	添加
+Apply	应用
+Reset	重置
+Retry	重试
+Dismiss	忽略
+Confirm	确认
+Learn More	了解更多
+Copy	复制
+Paste	粘贴
+Search	搜索
+Filter	筛选
+Clear	清除
+Done	完成
+Next	下一步
+Previous	上一步
+
+# ===== 通用界面文案 =====
+Sign In	登录
+Sign Out	退出登录
+Sign Up	注册
+Upgrade	升级
+Notifications	通知
+Loading...	加载中…
+Loading…	加载中…
+No results	无结果
+No Results	无结果
+Untitled	未命名
+Unsaved	未保存
+Restricted Mode	受限模式
+Restricted Mode prevents:	受限模式阻止以下操作：
+
+# ===== 面板与视图标题 =====
+Project	项目
+Project Panel	项目面板
+Collab Panel	协作面板
+Outline	大纲
+Terminal	终端
+Debugger	调试器
+Collaboration	协作
+Welcome	欢迎
+
+# ===== agent_ui =====
+(Current Plan)	（当前方案）
+Account Name	账户名称
+Add More Agents	添加更多智能体
+Add New Profile	新建配置
+Add Server…	添加服务器…
+Agent Diff	智能体差异
+Agent Title	智能体标题
+Agent title to keep	要保留的智能体标题
+An Error Happened	发生错误
+Anthropic will retain inference logs.	Anthropic 将保留推理日志。
+Authenticate to connect this server	通过身份验证以连接此服务器
+Authenticating…	正在验证…
+Authentication Required	需要身份验证
+Branch Diff	分支差异
+Change Mode	更改模式
+Change Model	更改模型
+Change Profile	更改配置
+Change Thinking Effort	更改思考强度
+Choose one of the following authentication options:	请选择以下一种身份验证方式：
+Codex on Windows	Windows 上的 Codex
+Configure Built-in Tools	配置内置工具
+Configure Default Model	配置默认模型
+Configure MCP Tools	配置 MCP 工具
+Context Too Large	上下文过大
+Copy Link	复制链接
+Copy This Agent Response	复制此智能体回复
+Copy as Markdown	复制为 Markdown
+Couldn't create a sandbox	无法创建沙箱
+Current Thread	当前会话
+Current:	当前：
+Custom Profiles	自定义配置
+Cycle Favorite Models	循环切换收藏的模型
+Cycle Thinking Effort	循环切换思考强度
+Cycle Through Modes	循环切换模式
+Cycle Through Profiles	循环切换配置
+Delete Profile	删除配置
+Deploy the app	部署应用
+Dev Server	开发服务器
+Disabled in Restricted Mode	受限模式下已禁用
+Don't show this warning again	不再显示此警告
+Enable Now	立即启用
+Enable and Don't Show Again	启用且不再显示
+Enter your OAuth client secret, or leave empty for public clients	输入你的 OAuth 客户端密钥，公共客户端可留空
+External Agents	外部智能体
+Fetching Agent Threads…	正在获取智能体会话…
+Files & Directories	文件与目录
+Finishing the rewrite	正在完成重写
+Fork Profile	派生配置
+Free Usage Exceeded	免费额度已用完
+Go Back	返回
+I understand and wish to proceed	我已知悉并愿意继续
+Input:	输入：
+Inspect output	检查输出
+Install New Servers…	安装新服务器…
+Log Out	退出登录
+MCP Servers	MCP 服务器
+Missing registry entry.	缺少注册表项。
+Network access	网络访问
+No external agents available.	没有可用的外部智能体。
+No text preview available	无可用文本预览
+Not supported on this platform	此平台不支持
+Open Global Rules	打开全局规则
+Open Project Rules	打开项目规则
+Open Thread as Markdown	以 Markdown 打开会话
+Output:	输出：
+Paste as Plain Text	粘贴为纯文本
+Persisted Shell Title	保留的终端标题
+Plain Text	纯文本
+Queue and Send	排队并发送
+Ran without sandbox	未在沙箱中运行
+Regenerate Thread Title	重新生成会话标题
+Reload Agent	重新加载智能体
+Remember Authorization	记住授权
+Request Refused	请求被拒绝
+Restored Terminal	已恢复的终端
+Resumed Session	已恢复的会话
+Review Before Sending	发送前审阅
+Run Command	运行命令
+Run command	运行命令
+Runs without the OS sandbox	在操作系统沙箱外运行
+Sandboxing is disabled for this thread	此会话已禁用沙箱
+Scroll to Bottom	滚动到底部
+Scroll to Subagent	滚动到子智能体
+Scroll to Top	滚动到顶部
+Select Options…	选择选项…
+Send Immediately	立即发送
+Subagent Output	子智能体输出
+Subagents Awaiting Permission:	等待授权的子智能体：
+This agent doesn't currently support multi-root workspaces	此智能体当前不支持多根工作区
+This command can write to a file on a Windows drive	此命令可以写入 Windows 驱动器上的文件
+Toggle Threads Sidebar	切换会话侧边栏
+Unavailable Editing	不可编辑
+Write Access	写入权限
+You have sandboxing disabled in settings.	你在设置中禁用了沙箱。
+You've been automatically reset to the Free plan.	你已被自动重置为免费套餐。
+Zed Agent	Zed 智能体
+
+# ===== git_ui =====
+Blame Previous Revision	追溯上一版本
+Blame Revision	追溯此版本
+Clone a repository from GitHub or other sources.	从 GitHub 或其他来源克隆仓库。
+Configure an LLM provider to generate commit messages.	配置 LLM 提供方以生成提交信息。
+Copy Commit SHA	复制提交 SHA
+Copy Ref Name	复制引用名
+Copy SHA	复制 SHA
+Create Pull Request	创建拉取请求
+Create Remote Repository	创建远程仓库
+Create Tag…	创建标签…
+Current Branch	当前分支
+Custom Commands	自定义命令
+Fetch From	拉取自
+Force Push	强制推送
+Generating Commit…	正在生成提交信息…
+Group By	分组方式
+Its parent history was not fetched, so the changes it introduced cannot be shown.	其父历史尚未拉取，因此无法显示它引入的更改。
+No Git Repositories	没有 Git 仓库
+No changes to commit	没有要提交的更改
+No commits found	未找到提交
+Open Commit Permalink	打开提交固定链接
+Open File in Project	在项目中打开文件
+Pull (Rebase)	拉取（变基）
+Push To	推送到
+Remote up to date	远程已是最新
+Selected Branch	选中的分支
+Show in Git Graph	在 Git 图表中显示
+Skip Hooks	跳过钩子
+Sort By	排序方式
+Stage All	暂存全部
+Staged & Unstaged	已暂存与未暂存
+Staged Changes	已暂存的更改
+This commit is at the boundary of a shallow clone.	此提交位于浅克隆的边界上。
+This will update your most recent commit.	这将更新你最近的一次提交。
+Tracked & Untracked	已跟踪与未跟踪
+Unstaged Changes	未暂存的更改
+View Diff	查看差异
+View Log	查看日志
+View Stash	查看贮藏
+
+# ===== language_models =====
+API URL	API 地址
+API key	API 密钥
+Access Key ID	访问密钥 ID
+Attach the necessary Bedrock permissions to	为以下对象附加必要的 Bedrock 权限
+Bedrock API Key	Bedrock API 密钥
+But first, to access models on AWS, you need to:	但首先，要访问 AWS 上的模型，你需要：
+Context Window	上下文窗口
+Default: Discovered from the server	默认：从服务器自动发现
+Default: Model specific	默认：因模型而异
+Download and install Ollama from	从以下地址下载并安装 Ollama
+Enable Fast Mode for Anthropic?	为 Anthropic 启用快速模式？
+Enable Fast Mode for OpenAI?	为 OpenAI 启用快速模式？
+Enable Fast Mode for Zed?	为 Zed 启用快速模式？
+For Bedrock API Keys: Generate an API key from the	使用 Bedrock API 密钥时：从以下位置生成 API 密钥
+For access keys: Create an IAM user in the AWS console with programmatic access	使用访问密钥时：在 AWS 控制台创建具有编程访问权限的 IAM 用户
+Grant permissions to the strategy you'll use according to the:	按以下说明为你将采用的策略授予权限：
+Install llama.cpp from	从以下地址安装 llama.cpp
+Let me think about this...	让我想想…
+Loading Credentials…	正在加载凭据…
+Loading credentials...	正在加载凭据…
+Loading credentials…	正在加载凭据…
+No subscriptions enabled. Enable at least one subscription to use OpenCode.	未启用任何订阅。请至少启用一个订阅以使用 OpenCode。
+Plan and continue	规划并继续
+Run local LLMs like Llama, Phi, and Qwen.	运行 Llama、Phi、Qwen 等本地大语言模型。
+Secret Access Key	私有访问密钥
+Select the models you would like access to:	选择你希望访问的模型：
+Session Token (Optional)	会话令牌（可选）
+Show Go models	显示 Go 模型
+Show Zen models	显示 Zen 模型
+Sign in and get your key at	登录并在以下地址获取密钥
+Start Ollama and download a model:	启动 Ollama 并下载模型：
+Start the server in router mode:	以路由模式启动服务器：
+Static Credentials	静态凭据
+This method uses your AWS access key ID and secret access key, or a Bedrock API Key.	此方式使用你的 AWS 访问密钥 ID 和私有访问密钥，或 Bedrock API 密钥。
+To get your first model, try running	要获取你的第一个模型，请尝试运行
+To use OpenCode models in Zed, you need an API key:	要在 Zed 中使用 OpenCode 模型，你需要一个 API 密钥：
+To use a local llama.cpp server:	要使用本地 llama.cpp 服务器：
+To use local Ollama:	要使用本地 Ollama：
+Using the API key	使用 API 密钥
+
+# ===== editor =====
+Add to Agent Thread	添加到智能体会话
+Clear Run Status	清除运行状态
+Conflict with Accept Keybinding	与接受快捷键冲突
+Copy Path	复制路径
+Copy Relative Path	复制相对路径
+Dynamic lens	动态代码透镜
+Edit Bookmark	编辑书签
+Evaluate Selection	求值选中内容
+Format Buffer	格式化缓冲区
+Format Selections	格式化选中内容
+Go to Implementation	转到实现
+Jump to Edit	跳转到编辑
+Open Markdown Preview	打开 Markdown 预览
+Open SVG Preview	打开 SVG 预览
+Open in Terminal	在终端中打开
+Rename Symbol	重命名符号
+Reveal In Project Panel	在项目面板中显示
+Right-Click to Copy Path	右键复制路径
+Run main	运行 main
+Run test	运行测试
+Run to Cursor	运行到光标处
+Show Code Actions	显示代码操作
+Show Symbol Outline	显示符号大纲
+
+# ===== edit_prediction_ui =====
+All Files	所有文件
+Configure Excluded Files	配置排除的文件
+Configure Providers	配置提供方
+Copilot: Next Edit Suggestions	Copilot：下一处编辑建议
+Disable Copilot Edit Predictions	禁用 Copilot 编辑预测
+Display Modes	显示模式
+Display predictions inline when there are no language server completions available.	在没有可用的语言服务器补全时，内联显示预测。
+Edit Prediction	编辑预测
+Edit predictions are disabled for this organization.	此组织已禁用编辑预测。
+Expected Patch	预期补丁
+Free tier limit reached	已达到免费额度上限
+From most recent to oldest	从最新到最早
+No data captured.	未捕获任何数据。
+No edits produced.	未产生任何编辑。
+Predict Edit at Cursor	在光标处预测编辑
+Predicted Patch	预测的补丁
+Rate Predictions	评价预测
+Rated completion.	已评价补全。
+Show Edit Predictions For	显示编辑预测的范围
+Sign In to Copilot Edit Predictions	登录以使用 Copilot 编辑预测
+Subscribe to increase your limit	订阅以提高额度
+Switch organizations or configure another provider to use edit predictions	切换组织或配置其他提供方以使用编辑预测
+This Buffer	此缓冲区
+This file is excluded.	此文件已被排除。
+This organization has no active subscription	此组织没有有效订阅
+Training Data Collection	训练数据收集
+Upgrade to Pro	升级到 Pro
+Upgrade to Zed Pro or contact us.	升级到 Zed Pro 或联系我们。
+Upgrade to a paid plan to continue using the service	升级到付费套餐以继续使用该服务
+View Docs	查看文档
+You have an outstanding invoice	你有未结清的账单
+Your GitHub account is less than 30 days old.	你的 GitHub 账户注册不足 30 天。
+Zed AI	Zed AI
+Zed's edit predictions not included in the Free plan.	免费套餐不包含 Zed 的编辑预测。
+
+# ===== collab_ui =====
+Add a Contact	添加联系人
+Call Diagnostics	通话诊断
+Calling…	正在呼叫…
+Collaboration is disabled for this organization.	此组织已禁用协作。
+Copy Channel Link	复制频道链接
+Copy Channel Notes Link	复制频道笔记链接
+Copy Link to Section	复制小节链接
+Demote to Guest	降级为访客
+Grant Mic Access	授予麦克风权限
+Grant Write Access	授予写入权限
+Inbound audio	入站音频
+Invite Members	邀请成员
+Invite new contacts	邀请新联系人
+Join Channel	加入频道
+Leave Channel	离开频道
+Make Channel Private	将频道设为私有
+Make Channel Public	将频道设为公开
+Manage Members	管理成员
+Mic only	仅麦克风
+Move this channel	移动此频道
+New Subchannel	新建子频道
+No call diagnostics available	无可用通话诊断
+Open Notes	打开笔记
+Promote to Admin	提升为管理员
+Remove Contact	移除联系人
+Remove from Channel	从频道中移除
+Showing diagnostics from the most recent call	显示最近一次通话的诊断信息
+Waiting for inbound audio statistics	等待入站音频统计
+
+# ===== workspace =====
+Clone Repository	克隆仓库
+Close All	全部关闭
+Close Clean	关闭未修改的标签页
+Close Left	关闭左侧标签页
+Close Multibuffers	关闭多重缓冲区
+Close Others	关闭其他标签页
+Close Right	关闭右侧标签页
+Collaborate with Agents	与智能体协作
+Customize Keymaps	自定义快捷键
+Explore Extensions	浏览扩展
+Get Started	快速开始
+Open Command Palette	打开命令面板
+Open File	打开文件
+Open Project	打开项目
+Pin Tab	固定标签页
+Recent Projects	最近的项目
+Review .zed/settings.json for any extensions or commands configured by this project.	请检查 .zed/settings.json 中此项目配置的扩展或命令。
+Search Project	在项目中搜索
+Search Symbols	搜索符号
+Trust all projects in	信任以下位置的所有项目
+Unpin Tab	取消固定标签页
+Untrusted projects are opened in Restricted Mode to protect your system.	为保护你的系统，不受信任的项目会以受限模式打开。
+
+# ===== task =====
+Attach to Process	附加到进程
+Build Extension	构建扩展
+Build Extension in Background	在后台构建扩展
+Build Server	构建服务器
+Build Server (Release)	构建服务器（发布版）
+Build Server (Release) and Extension	构建服务器（发布版）和扩展
+Build Server and Extension	构建服务器和扩展
+Debug my JS app	调试我的 JS 应用
+My task	我的任务
+Run Godot Game	运行 Godot 游戏
+With args	带参数
+With cwd	带工作目录
+With env	带环境变量
+With path	带路径
+With path and cwd	带路径和工作目录
+Without args	不带参数
+
+# ===== language_tools =====
+All highlights are filtered out	所有高亮均已被过滤
+Current Context Stack	当前上下文栈
+Current editor has no associated language	当前编辑器没有关联语言
+Enable text, syntax, or semantic highlights in the toolbar	在工具栏中启用文本、语法或语义高亮
+Focus an editor to show a new tree view	聚焦编辑器以显示新的树视图
+Focus an editor to show highlights	聚焦编辑器以显示高亮
+Key Equivalents	等效按键
+Keyboard Context	键盘上下文
+Language Servers can't run until you trust this project.	在你信任此项目之前，语言服务器无法运行。
+Last Keystroke	最近按键
+No highlights found	未找到高亮
+Not attached to an editor	未附加到编辑器
+Project is in Restricted Mode	项目处于受限模式
+Restart Server	重启服务器
+Stop Server	停止服务器
+The editor has no text, syntax, or semantic token highlights	此编辑器没有文本、语法或语义标记高亮
+View Logs	查看日志
+View Message	查看消息
+
+# ===== project_panel =====
+Add Folders to Project…	添加文件夹到项目…
+Add to .git/info/exclude	添加到 .git/info/exclude
+Add to .gitignore	添加到 .gitignore
+Collapse All	全部折叠
+Compare Marked Files	比较标记的文件
+Copy File Permalink	复制文件固定链接
+Download...	下载…
+Expand All	全部展开
+Find in Folder…	在文件夹中查找…
+New File	新建文件
+New Folder	新建文件夹
+Open File Permalink	打开文件固定链接
+Open in Default App	用默认应用打开
+Remove from Project	从项目中移除
+Restore File	恢复文件
+Search Inside	在内部搜索
+View History	查看历史
+
+# ===== zed =====
+Clear Outputs	清除输出
+Edit Predictions	编辑预测
+Go to Line/Column	转到行/列
+Go to Symbol	转到符号
+Inline Diagnostics	内联诊断
+Inline diagnostics are not available until regular diagnostics are enabled.	在启用常规诊断之前，内联诊断不可用。
+Installing Zed…	正在安装 Zed…
+Moving Zed to Applications	正在将 Zed 移动到「应用程序」
+Paste a URL to open.	粘贴要打开的 URL。
+Restart Kernel	重启内核
+Shut Down Kernel	关闭内核
+Shut Down all Kernels	关闭所有内核
+View Sessions	查看会话
+You can't toggle edit predictions for this file as it is within the excluded files list.	此文件在排除列表中，无法切换编辑预测。
+Zed will reopen when installation is complete.	安装完成后 Zed 将重新打开。
+
+# ===== debugger_ui =====
+Attach New Session Setup	附加新会话设置
+Copy Name	复制名称
+Copy Value	复制值
+Current State	当前状态
+Debugger:	调试器：
+Edit Value	编辑值
+Go To Memory	转到内存
+No Breakpoints Set	未设置断点
+Remove Watch	移除监视
+Stop on Entry	在入口处停止
+Toggle Data Breakpoint	切换数据断点
+Watch Expression	监视表达式
+Watch Variable	监视变量
+Working Directory	工作目录
+
+# ===== recent_projects =====
+Add Folder to this Project	添加文件夹到此项目
+Copy Server Address	复制服务器地址
+Creating Dev Container	正在创建开发容器
+Enter the command you use to SSH into this server.	输入你用于 SSH 连接此服务器的命令。
+Error Creating Dev Container:	创建开发容器出错：
+Open Local Folders	打开本地文件夹
+Open Remote Folder	打开远程文件夹
+Open Zed Log	打开 Zed 日志
+Remove Distro	移除发行版
+Remove Server	移除服务器
+WSL:	WSL：
+
+# ===== onboarding =====
+Agent Setup	智能体设置
+Automatically pull your settings from other editors	自动从其他编辑器导入你的设置
+Base Keymap	基础快捷键方案
+Edit and save files directly in the results multibuffer!	直接在结果多重缓冲区中编辑并保存文件！
+Import Settings	导入设置
+Install your favorite agents and start your first thread.	安装你常用的智能体并开始第一个会话。
+Open Log	打开日志
+Signing In…	正在登录…
+Start Free Trial	开始免费试用
+The editor for what's next	面向未来的编辑器
+
+# ===== sidebar =====
+Archive Thread	归档会话
+Focus Sidebar	聚焦侧边栏
+Move Down	下移
+Move Up	上移
+New Thread In…	新建会话于…
+No threads yet	尚无会话
+Open Project in New Window	在新窗口中打开项目
+Open Worktrees	打开工作树
+Rename Title	重命名标题
+Toggle Sidebar	切换侧边栏
+
+# ===== repl =====
+Connecting to kernel...	正在连接内核…
+Executing...	正在执行…
+Install Kernels	安装内核
+Kernel restarting...	内核正在重启…
+Kernel shutdown	内核已关闭
+Kernel shutting down...	内核正在关闭…
+Queued...	已排队…
+This notebook is empty.	此笔记本为空。
+Unknown status	未知状态
+
+# ===== terminal_view =====
+Close Terminal Tab	关闭终端标签页
+Edit Settings	编辑设置
+Edit settings.json	编辑 settings.json
+Failed to spawn terminal	无法启动终端
+Inline Assist	内联辅助
+New Center Terminal	新建居中终端
+New Terminal	新建终端
+Paste Text	粘贴文本
+
+# ===== extensions_ui =====
+Copy Author Info	复制作者信息
+Copy Extension ID	复制扩展 ID
+Enable Vim mode	启用 Vim 模式
+Failed to load extensions. Showing installed extensions only.	加载扩展失败。仅显示已安装的扩展。
+Install Another Version...	安装其他版本…
+Local Theme	本地主题
+Overridden by dev extension.	已被开发扩展覆盖。
+
+# ===== ai_onboarding =====
+API Keys	API 密钥
+Here's what you get:	你将获得：
+Included for 14 days from when your trial started:	自试用开始起 14 天内包含：
+Pro Trial	Pro 试用
+Sign in to try GPT Luna. Your 14 days begin when you start the trial.	登录以试用 GPT Luna。14 天从你开始试用时算起。
+Start now using API keys from your environment for the following providers:	立即开始：使用以下提供方在你的环境中配置的 API 密钥：
+
+# ===== copilot_ui =====
+Authenticate To Use	验证身份以使用
+Paste this code into GitHub after clicking the button below.	点击下方按钮后，将此代码粘贴到 GitHub。
+Using Copilot Chat requires an active subscription on GitHub.	使用 Copilot Chat 需要 GitHub 上的有效订阅。
+Using Copilot edit predictions requires an active subscription on GitHub.	使用 Copilot 编辑预测需要 GitHub 上的有效订阅。
+You're all set to use Copilot Chat.	你已可以开始使用 Copilot Chat。
+You're all set to use Copilot edit predictions.	你已可以开始使用 Copilot 编辑预测。
+
+# ===== keymap_editor =====
+Copy Action	复制操作
+Create Keybinding	创建快捷键绑定
+Edit Arguments	编辑参数
+Edit Context	编辑上下文
+Edit Keystroke	编辑按键
+Zed Keybind Context	Zed 快捷键上下文
+
+# ===== outline_panel =====
+Fold Directory	折叠目录
+Searching:	正在搜索：
+Toggle Panel With	切换面板方式
+Unfold Directory	展开目录
+
+# ===== tabular_data_preview =====
+Clear all	全部清除
+Dev-only: Rendering Mode	仅开发：渲染模式
+Filter Sort	筛选与排序
+Text Alignment	文本对齐
+
+# ===== platform_title_bar =====
+Close Other Tabs	关闭其他标签页
+Close Tab	关闭标签页
+Move Tab to New Window	将标签页移到新窗口
+Show All Tabs	显示所有标签页
+
+# ===== inspector_ui =====
+Element ID	元素 ID
+GPUI Inspector	GPUI 检查器
+JSON Style	JSON 样式
+Rust Style	Rust 样式
+
+# ===== title_bar =====
+Icon Themes…	图标主题…
+Restart to update Zed	重启以更新 Zed
+Signing in…	正在登录…
+Themes…	主题…
+
+# ===== markdown =====
+Failed to Load Mermaid Diagram	加载 Mermaid 图表失败
+Failed to load mermaid diagram	加载 Mermaid 图表失败
+Rendering...	正在渲染…
+
+# ===== dev_container =====
+Querying features...	正在查询功能…
+Querying template registry...	正在查询模板注册表…
+Search for Dev Container Templates	搜索开发容器模板
+
+# ===== component_preview =====
+All Components	所有组件
+Open Pull Request	创建拉取请求
+
+# ===== language_onboarding =====
+Basedpyright is now the only default language server for Python	Basedpyright 现在是 Python 唯一的默认语言服务器
+We have disabled PyRight and pylsp by default. They can be re-enabled in your settings.	我们已默认禁用 PyRight 和 pylsp。你可以在设置中重新启用它们。
+
+# ===== vim =====
+Default Vim Bindings	默认 Vim 快捷键
+
+# ===== git_ui_core =====
+Deleting…	正在删除…
+You may need to configure git for Github.	你可能需要为 GitHub 配置 git。
+
+# ===== extension_suggest =====
+Emmet expands abbreviations such as `ul>li*3` into HTML and `m10` into CSS.	Emmet 可将 `ul>li*3` 等缩写展开为 HTML，将 `m10` 展开为 CSS。
+Emmet is available for this file	此文件可使用 Emmet
+
+# ===== search =====
+Find in Results	在结果中查找
+No results found in this project for the provided query	在此项目中未找到与查询匹配的结果
+
+# ===== ui_input =====
+Regular Label	常规标签
+Small Label	小标签
+
+# ===== 其他零散条目 =====
+More Info	更多信息
+Built on DeltaDB, so your threads and code stay in sync across machines and teammates.	基于 DeltaDB 构建，让你的会话和代码在不同机器与团队成员之间保持同步。
+Caps lock is on.	大写锁定已开启。
+Check all targets (workspace)	检查所有目标（工作区）
+Executing command…	正在执行命令…
+Getting Started	快速开始
+GPUI Typography	GPUI 排版
+Include profiler timings	包含性能分析计时
+No active connections	无活动连接
+No problems	无问题
+Open Tasks Documentation	打开任务文档
+Run a command	运行命令
+Save File	保存文件
+Select Toolchain Path	选择工具链路径
+Sign in	登录
+Zed Default	Zed 默认
+ACP Docs	ACP 文档
+API Key	API 密钥
+Accessible Mode	无障碍模式
+Action to take when no patterns match.	没有模式匹配时执行的操作。
+Activate On Close	关闭时激活
+Active Encoding Button	活动编码按钮
+Active File Name	活动文件名
+Active Language Button	活动语言按钮
+Active Line Width	活动行宽度
+Add Custom Agent	添加自定义智能体
+Add Local Server	添加本地服务器
+Add Remote Server	添加远程服务器
+Agent Panel Button	智能体面板按钮
+Agent Panel Default Height	智能体面板默认高度
+Agent Panel Default Width	智能体面板默认宽度
+Agent Panel Dock	智能体面板停靠位置
+Agent Panel Flexible Sizing	智能体面板弹性尺寸
+Agent Review	智能体审阅
+Allow Rewrap	允许重新换行
+Alternate Scroll	备用滚动
+Always Treat Brackets As Autoclosed	始终将括号视为已自动闭合
+Amount of indentation for nested items.	嵌套项的缩进量。
+Anthropic Data Retention	Anthropic 数据保留
+Audible Bell	声音提示
+Auto Compact	自动压缩
+Auto Compact Threshold	自动压缩阈值
+Auto Fold Directories	自动折叠目录
+Auto Indent	自动缩进
+Auto Indent On Paste	粘贴时自动缩进
+Auto Open Files On Create	创建时自动打开文件
+Auto Open Files On Drop	拖放时自动打开文件
+Auto Open Files On Paste	粘贴时自动打开文件
+Auto Reveal Entries	自动显示条目
+Auto Save Mode	自动保存模式
+Auto Signature Help	自动签名帮助
+Auto Update	自动更新
+Autoscroll On Clicks	点击时自动滚动
+Background Coloring	背景着色
+Bold Folder Labels	文件夹标签加粗
+Border Size	边框大小
+Bottom Dock Layout	底部停靠栏布局
+Buffer Font Family	缓冲区字体
+Buffer Font Size	缓冲区字号
+Button Layout	按钮布局
+CLI Default Open Behavior	命令行默认打开方式
+Cancel Generation On Terminal Stop	终端停止时取消生成
+Case Sensitive	区分大小写
+Center on Match	匹配项居中
+Centered Layout Left Padding	居中布局左内边距
+Centered Layout Right Padding	居中布局右内边距
+Close Panel on Toggle	切换时关闭面板
+Close on File Delete	文件删除时关闭
+Code Actions	代码操作
+Code Actions On Format	格式化时的代码操作
+Code Font Family	代码字体
+Code Lens	代码透镜
+Collaboration Panel Button	协作面板按钮
+Collaboration Panel Default Width	协作面板默认宽度
+Collaboration Panel Dock	协作面板停靠位置
+Collapse Untracked Diff	折叠未跟踪的差异
+Colorize Brackets	括号着色
+Commands executed in the terminal	在终端中执行的命令
+Commit Editor	提交编辑器
+Commit Title Max Length	提交标题最大长度
+Compatible APIs	兼容的 API
+Completion Detail Alignment	补全详情对齐方式
+Completion Menu Item Kind	补全菜单项类型
+Completion Menu Scrollbar	补全菜单滚动条
+Configure Provider	配置提供方
+Configured Servers	已配置的服务器
+Controls how LSP completions are inserted.	控制 LSP 补全的插入方式。
+Controls how words are completed.	控制单词的补全方式。
+Copy On Select	选中即复制
+Create Directory	创建目录
+Create Skill	创建技能
+Current Line Highlight	当前行高亮
+Cursor Animation	光标动画
+Cursor Blink	光标闪烁
+Cursor Blinking	光标闪烁
+Cursor Position Button	光标位置按钮
+Cursor Shape	光标形状
+Cursor Shape - Insert Mode	光标形状 - 插入模式
+Cursor Shape - Normal Mode	光标形状 - 普通模式
+Cursor Shape - Replace Mode	光标形状 - 替换模式
+Cursor Shape - Visual Mode	光标形状 - 可视模式
+Cursor shape for normal mode.	普通模式下的光标形状。
+Cursor shape for replace mode.	替换模式下的光标形状。
+Cursor shape for the editor.	编辑器中的光标形状。
+Cursor shape for visual mode.	可视模式下的光标形状。
+Custom Button Layout	自定义按钮布局
+Custom Delay	自定义延迟
+Custom Digraphs	自定义二合字母
+Custom Line Height	自定义行高
+Custom Width	自定义宽度
+Custom digraph mappings for Vim mode.	Vim 模式的自定义二合字母映射。
+Dark Icon Theme	深色图标主题
+Dark Theme	深色主题
+Data Collection	数据收集
+Debugger Button	调试器按钮
+Debugger Panel Dock	调试器面板停靠位置
+Default Action	默认操作
+Default Height	默认高度
+Default Mode	默认模式
+Default Open Behavior	默认打开方式
+Default Permission	默认权限
+Default Width	默认宽度
+Default reasoning effort	默认推理强度
+Default width of the Git panel in pixels.	Git 面板的默认宽度（像素）。
+Delay (milliseconds)	延迟（毫秒）
+Delete Path	删除路径
+Detect Virtual Environment	检测虚拟环境
+Determines how indent guides are colored.	决定缩进参考线的着色方式。
+Diagnostic Badges	诊断徽标
+Diagnostics Button	诊断按钮
+Diff Base	差异基准
+Diff Stats	差异统计
+Diff View Style	差异视图样式
+Direction to split horizontally.	水平拆分方向。
+Direction to split vertically.	垂直拆分方向。
+Directory creation	目录创建
+Disable AI	禁用 AI
+Disable Git Integration	禁用 Git 集成
+Disable in Language Scopes	在语言作用域中禁用
+Display In	显示位置
+Display Mode	显示模式
+Display indent guides in the editor.	在编辑器中显示缩进参考线。
+Double Click In Multibuffer	在多重缓冲区中双击
+Drag and Drop	拖放
+Drop Size Target	拖放尺寸目标
+Edit Debounce Ms	编辑防抖（毫秒）
+Edit File	编辑文件
+Edit Keybindings	编辑快捷键
+Enable Feedback	启用反馈
+Enable Git Diff	启用 Git 差异
+Enable Git Status	启用 Git 状态
+Enable Helix mode and key bindings.	启用 Helix 模式及快捷键。
+Enable Keep Preview On Code Navigation	代码导航时保留预览
+Enable Language Server	启用语言服务器
+Enable Preview File From Code Navigation	从代码导航预览文件
+Enable Preview From File Finder	从文件查找器预览
+Enable Preview From Multibuffer	从多重缓冲区预览
+Enable Preview From Project Panel	从项目面板预览
+Enable Vim mode and key bindings.	启用 Vim 模式及快捷键。
+Enable drag and drop selection.	启用拖放选择。
+Enable middle-click paste on Linux.	在 Linux 上启用中键粘贴。
+Enable smartcase searching in Vim mode.	在 Vim 模式中启用智能大小写搜索。
+Ensure Final Newline On Save	保存时确保末尾换行
+Entry Spacing	条目间距
+Environment Variables	环境变量
+Excerpt Context Lines	摘要上下文行数
+Expand Edit Card	展开编辑卡片
+Expand Excerpt Lines	展开摘要行数
+Expand Outlines With Depth	按深度展开大纲
+Expand Terminal Card	展开终端卡片
+Extend Comment On Newline	换行时延续注释
+Fallback Branch Name	回退分支名
+Fast Scroll Sensitivity	快速滚动灵敏度
+Feature Flags	功能开关
+Fetch Timeout (milliseconds)	拉取超时（毫秒）
+File Icons	文件图标
+File Scan Depth	文件扫描深度
+File Scan Exclusions	文件扫描排除项
+File Scan Inclusions	文件扫描包含项
+File Type Associations	文件类型关联
+File and directory copying	文件与目录复制
+File and directory deletion	文件与目录删除
+File and directory moves/renames	文件与目录移动/重命名
+File creation and overwrite operations	文件创建与覆盖操作
+File editing operations	文件编辑操作
+Focus Follows Mouse	焦点跟随鼠标
+Focus Follows Mouse Debounce ms	焦点跟随鼠标防抖（毫秒）
+Folder Indicator	文件夹标记
+Font Fallbacks	字体回退
+Font Family	字体
+Font Features	字体特性
+Font Size	字号
+Font Weight	字重
+Font family for UI elements.	界面元素的字体。
+Font family for editor text.	编辑器文本的字体。
+Font features for terminal text.	终端文本的字体特性。
+Font size for UI elements.	界面元素的字号。
+Font size for editor text.	编辑器文本的字号。
+Font weight for UI elements (100-900).	界面元素的字重（100-900）。
+Font weight for editor text (100-900).	编辑器文本的字重（100-900）。
+Format DAP Log Messages	格式化 DAP 日志消息
+Format On Save	保存时格式化
+Front-matter	前言
+Fullscreen Mode	全屏模式
+Git Diff	Git 差异
+Git Gutter Width	Git 边栏宽度
+Git Panel Button	Git 面板按钮
+Git Panel Default Width	Git 面板默认宽度
+Git Panel Dock	Git 面板停靠位置
+Git Panel Status Style	Git 面板状态样式
+Git Status	Git 状态
+Git Status Indicator	Git 状态指示器
+Global Substitution Default	全局替换默认值
+Global switch to toggle hints on and off.	用于开关提示的全局设置。
+Go To Definition Fallback	转到定义的回退行为
+Go To Definition Scroll Strategy	转到定义的滚动策略
+HTTP requests to URLs	向 URL 发起的 HTTP 请求
+Hard Tabs	硬制表符
+Heading Font Weight	标题字重
+Helix Mode	Helix 模式
+Hidden Files	隐藏文件
+Hide .gitignore	隐藏 .gitignore
+Hide Hidden	隐藏隐藏文件
+Hide Mouse	隐藏鼠标
+Hide Root	隐藏根节点
+Hide Symbols in Multi-Buffers	在多重缓冲区中隐藏符号
+Hiding Delay	隐藏延迟
+Highlight on Yank Duration	复制时高亮持续时间
+Horizontal Scroll	水平滚动
+Horizontal Scroll Margin	水平滚动边距
+Horizontal Scrollbar	水平滚动条
+Horizontal Split Direction	水平拆分方向
+How entry statuses are displayed.	条目状态的显示方式。
+How many columns a tab should occupy.	制表符占用的列数。
+How projects open from the UI by default.	从界面打开项目的默认方式。
+How to display diffs in the editor.	在编辑器中显示差异的方式。
+How to group entries in the git panel.	Git 面板中条目的分组方式。
+How to highlight the current line.	当前行的高亮方式。
+How to indent soft-wrapped lines.	自动换行行的缩进方式。
+How to perform a buffer format.	执行缓冲区格式化的方式。
+How to soft-wrap long lines of text.	长文本行的自动换行方式。
+How to sort entries in the git panel.	Git 面板中条目的排序方式。
+Hunk Style	区块样式
+Icon Theme	图标主题
+Icon Theme Name	图标主题名称
+Image Viewer	图片查看器
+Import from URL	从 URL 导入
+Inactive Opacity	非活动不透明度
+Include Ignored	包含已忽略项
+Include Ignored in Search	搜索时包含已忽略项
+Include Warnings	包含警告
+Indent Size	缩进大小
+Inline Code Actions	内联代码操作
+Input Audio Device	输入音频设备
+Input Device	输入设备
+Insert Mode	插入模式
+Install from Extensions	从扩展安装
+Install from Registry	从注册表安装
+Invalid Patterns	无效模式
+JSX Tag Auto Close	JSX 标签自动闭合
+Keep Selection On Copy	复制时保留选区
+LLM Providers	LLM 提供方
+LSP Document Colors	LSP 文档颜色
+LSP Document Symbols	LSP 文档符号
+LSP Folding Ranges	LSP 折叠范围
+LSP Results Location	LSP 结果显示位置
+Language Detection	语言检测
+Language Servers	语言服务器
+Languages & Tools	语言与工具
+Layout mode for the bottom dock.	底部停靠栏的布局模式。
+Left padding for centered layout.	居中布局的左内边距。
+Light Icon Theme	浅色图标主题
+Light Theme	浅色主题
+Limit Content Width	限制内容宽度
+Limit Markdown Preview Width	限制 Markdown 预览宽度
+Line Ending	行尾符
+Line Endings Button	行尾符按钮
+Line Height	行高
+Line Width	行宽
+Line height for editor text.	编辑器文本的行高。
+Line height for terminal text.	终端文本的行高。
+Linked Edits	联动编辑
+Loading agent skill instructions	正在加载智能体技能说明
+Log DAP Communications	记录 DAP 通信
+MCP Server Timeout	MCP 服务器超时
+Max Content Width	内容最大宽度
+Max Idle Threads	最大空闲会话数
+Max Output Tokens	最大输出 token 数
+Max Scroll History Lines	最大滚动历史行数
+Max Severity	最高严重级别
+Max Tokens	最大 token 数
+Max Width	最大宽度
+Max Width Columns	最大宽度列数
+Maximum Tabs	最大标签页数
+Menu Delay	菜单延迟
+Message Editor Min Lines	消息编辑器最小行数
+Middle Click Paste	中键粘贴
+Min Line Number Digits	行号最小位数
+Minimum Column	最小列
+Minimum Contrast	最低对比度
+Minimum Contrast For Highlights	高亮最低对比度
+Minimum Split Diff Width	拆分差异最小宽度
+Modifier key for adding multiple cursors.	添加多光标所用的修饰键。
+Mouse Wheel Zoom	鼠标滚轮缩放
+Move Path	移动路径
+Multi Cursor Modifier	多光标修饰键
+Mute On Join	加入时静音
+No patterns configured	未配置模式
+Nothing configured	未配置任何内容
+Notify When Agent Waiting	智能体等待时通知
+On Last Window Closed	关闭最后一个窗口时
+On New Window	新窗口打开时
+Opacity of inactive panels (0.0 - 1.0).	非活动面板的不透明度（0.0 - 1.0）。
+Open Links In Mouse Mode	鼠标模式下打开链接
+Open Markdown Files in Preview	以预览方式打开 Markdown 文件
+Open Menus on Hover	悬停时打开菜单
+Option As Meta	将 Option 键用作 Meta 键
+Outline Panel Button	大纲面板按钮
+Outline Panel Default Width	大纲面板默认宽度
+Outline Panel Dock	大纲面板停靠位置
+Output Audio Device	输出音频设备
+Output Device	输出设备
+Path Style	路径样式
+Pending Keystrokes Indicator	待决按键指示器
+Performance Profiler	性能分析器
+Pinned Tabs Layout	固定标签页布局
+Play Sound When Agent Done	智能体完成时播放声音
+Position of the close button in a tab.	标签页中关闭按钮的位置。
+Prediction Debounce	预测防抖
+Prefer LSP	优先使用 LSP
+Preferred Line Length	首选行宽
+Preferred debuggers for this language.	此语言首选使用的调试器。
+Prefill Query From Selection	从选中内容预填查询
+Prevent Idle Sleep	防止空闲休眠
+Preview Channel	预览渠道
+Preview Tabs Enabled	启用预览标签页
+Primary Click Behavior	主键点击行为
+Private Files	私有文件
+Project Panel Button	项目面板按钮
+Project Panel Default Width	项目面板默认宽度
+Project Panel Dock	项目面板停靠位置
+Project Panel Title Tooltips Delay	项目面板标题提示延迟
+Project Search Button	项目搜索按钮
+Prompt Format	提示词格式
+Quick Actions	快捷操作
+Redact Private Values	隐去私有值
+Reduce Motion	减少动态效果
+Regex Search	正则搜索
+Relative Line Numbers	相对行号
+Remove Trailing Whitespace On Save	保存时移除行尾空白
+Restore File State	恢复文件状态
+Restore On Startup	启动时恢复
+Restore Unsaved Buffers	恢复未保存的缓冲区
+Result:	结果：
+Reveal If Open	若已打开则显示
+Right padding for centered layout.	居中布局的右内边距。
+Rounded Selection	圆角选区
+Save Breakpoints	保存断点
+Scan Symbolic Links	扫描符号链接
+Scroll Bar	滚动条
+Scroll Beyond Last Line	可滚动到最后一行之后
+Scroll Debounce Ms	滚动防抖（毫秒）
+Scroll Multiplier	滚动倍率
+Scroll Sensitivity	滚动灵敏度
+Search & Files	搜索与文件
+Search Results	搜索结果
+Search Wrap	搜索循环
+Search case-sensitively by default.	默认区分大小写搜索。
+Search for whole words by default.	默认全词匹配搜索。
+Search on Type	输入时搜索
+Seed Search Query From Cursor	从光标处预填搜索内容
+Select input audio device	选择输入音频设备
+Select output audio device	选择输出音频设备
+Selected Symbol	选中的符号
+Selected Text	选中的文本
+Selection Highlight	选区高亮
+Selections Menu	选择菜单
+Semantic Tokens	语义标记
+Send debug information like crash reports.	发送崩溃报告等调试信息。
+Server URL	服务器地址
+Settings Profiles	设置配置方案
+Share On Join	加入时共享
+Show Author Name	显示作者名
+Show Avatar	显示头像
+Show Background	显示背景
+Show Bookmarks	显示书签
+Show Branch Name	显示分支名
+Show Branch Status Icon	显示分支状态图标
+Show Breakpoints	显示断点
+Show Close Button	显示关闭按钮
+Show Commit Summary	显示提交摘要
+Show Completion Documentation	显示补全文档
+Show Completions On Input	输入时显示补全
+Show Count Badge	显示计数徽标
+Show Diagnostics	显示诊断
+Show Edit Predictions	显示编辑预测
+Show Edit Predictions in Normal Mode	在普通模式下显示编辑预测
+Show File Icons In Tabs	在标签页中显示文件图标
+Show Folds	显示折叠控件
+Show Full File by Default	默认显示完整文件
+Show Git Status In Tabs	在标签页中显示 Git 状态
+Show Git diff indicators in the scrollbar.	在滚动条中显示 Git 差异指示。
+Show Git diff information in the editor.	在编辑器中显示 Git 差异信息。
+Show Git status information in the editor.	在编辑器中显示 Git 状态信息。
+Show Indent Guides	显示缩进参考线
+Show Line Numbers	显示行号
+Show Menus	显示菜单
+Show Merge Conflict Indicator	显示合并冲突指示器
+Show Navigation History Buttons	显示导航历史按钮
+Show Onboarding Banner	显示新手引导横幅
+Show Other Hints	显示其他提示
+Show Parameter Hints	显示参数提示
+Show Project Items	显示项目条目
+Show Runnables	显示可运行项
+Show Scrollbar	显示滚动条
+Show Sign In	显示登录
+Show Signature Help After Edits	编辑后显示签名帮助
+Show Stage/Restore Buttons	显示暂存/恢复按钮
+Show Tab Bar	显示标签栏
+Show Tab Bar Buttons	显示标签栏按钮
+Show Turn Stats	显示轮次统计
+Show Type Hints	显示类型提示
+Show User Menu	显示用户菜单
+Show User Picture	显示用户头像
+Show Value Hints	显示值提示
+Show Which-key Menu	显示 Which-key 菜单
+Show Whitespaces	显示空白字符
+Show Worktree Name	显示工作树名称
+Show Wrap Guides	显示换行参考线
+Show a background for inlay hints.	为嵌入提示显示背景。
+Show bookmarks in the gutter.	在边栏中显示书签。
+Show breadcrumbs.	显示面包屑导航。
+Show breakpoints in the gutter.	在边栏中显示断点。
+Show code folding controls in the gutter.	在边栏中显示代码折叠控件。
+Show cursor positions in the scrollbar.	在滚动条中显示光标位置。
+Show file icons in the file finder.	在文件查找器中显示文件图标。
+Show file icons in the outline panel.	在大纲面板中显示文件图标。
+Show file icons in the project panel.	在项目面板中显示文件图标。
+Show indent guides in the project panel.	在项目面板中显示缩进参考线。
+Show line numbers in the gutter.	在边栏中显示行号。
+Show opened editors as preview tabs.	将打开的编辑器显示为预览标签页。
+Show padding for zoomed panes.	为缩放窗格显示内边距。
+Show runnable buttons in the gutter.	在边栏中显示可运行按钮。
+Show the Git file status on a tab item.	在标签页条目上显示 Git 文件状态。
+Show the Git status in the outline panel.	在大纲面板中显示 Git 状态。
+Show the Git status in the project panel.	在项目面板中显示 Git 状态。
+Show the file icon for a tab.	显示标签页的文件图标。
+Show the menus in the titlebar.	在标题栏中显示菜单。
+Show the scrollbar in the project panel.	在项目面板中显示滚动条。
+Show the sign in button in the titlebar.	在标题栏中显示登录按钮。
+Show the tab bar in the editor.	在编辑器中显示标签栏。
+Show the user menu button in the titlebar.	在标题栏中显示用户菜单按钮。
+Show user picture in the titlebar.	在标题栏中显示用户头像。
+Show wrap guides (vertical rulers).	显示换行参考线（垂直标尺）。
+Show wrap guides in the editor.	在编辑器中显示换行参考线。
+Single File Review	单文件审阅
+Skill Content	技能内容
+Skip Focus For Active In Search	搜索中跳过活动项聚焦
+Snippet Sort Order	代码片段排序方式
+Soft Wrap	自动换行
+Soft Wrap Indent	自动换行缩进
+Sort Mode	排序模式
+Sort Order	排序顺序
+Space Whitespace Indicator	空格空白指示器
+Starts Open	初始为打开
+Stepping Granularity	单步粒度
+Sticky Scroll	粘性滚动
+Suggest Extensions	推荐扩展
+Tab Close Position	标签页关闭按钮位置
+Tab Show Diagnostics	标签页显示诊断
+Tab Size	制表符宽度
+Tab Whitespace Indicator	制表符空白指示器
+Telemetry Diagnostics	遥测诊断
+Telemetry Metrics	遥测指标
+Terminal Button	终端按钮
+Terminal Dock	终端停靠位置
+Terminal Panel Flexible Sizing	终端面板弹性尺寸
+Terminal Thread Init Command	终端会话初始化命令
+Test Audio	测试音频
+Test Your Rules	测试你的规则
+Text Rendering Mode	文本渲染模式
+The API URL to use for Codestral.	Codestral 使用的 API 地址。
+The Codestral model id to use.	使用的 Codestral 模型 ID。
+The URL of the Zed server to connect to.	要连接的 Zed 服务器地址。
+The base URL of your Ollama server.	你的 Ollama 服务器基础地址。
+The default mode when Vim starts.	Vim 启动时的默认模式。
+The dock position of the debug panel.	调试面板的停靠位置。
+The maximum number of tokens to generate.	生成的最大 token 数。
+The name of your selected icon theme.	你选择的图标主题名称。
+The name of your selected theme.	你选择的主题名称。
+The proxy to use for network requests.	网络请求使用的代理。
+The shell program to run.	要运行的 shell 程序。
+The shell program to use.	要使用的 shell 程序。
+The text rendering mode to use.	使用的文本渲染模式。
+The unit for image file sizes.	图片文件大小的单位。
+Theme Mode	主题模式
+Theme Name	主题名称
+Thinking Display	思考内容显示
+Threads Sidebar Auto Open	会话侧边栏自动打开
+Threads Sidebar Default Width	会话侧边栏默认宽度
+Threads Sidebar Position	会话侧边栏位置
+Thumb Border	滑块边框
+Title Format	标题格式
+Title Override	标题覆盖
+Title Separator	标题分隔符
+To find an API key, visit the	要获取 API 密钥，请访问
+Toggle On Modifiers Press	按下修饰键时切换
+Toggle Relative Line Numbers	切换相对行号
+Toggle relative line numbers in Vim mode.	在 Vim 模式中切换相对行号。
+Tool Permissions	工具权限
+Tree View	树视图
+Trust All Projects By Default	默认信任所有项目
+UI Font Family	界面字体
+UI Font Size	界面字号
+Unnecessary Code Fade	无用代码淡化
+Update Debounce	更新防抖
+Use Auto Surround	使用自动包裹
+Use Autoclose	使用自动闭合
+Use Command History	使用命令历史
+Use Modifier To Send	使用修饰键发送
+Use On Type Format	使用输入时格式化
+Use Smartcase Find	使用智能大小写查找
+Use Smartcase Search	使用智能大小写搜索
+Use System Clipboard	使用系统剪贴板
+Use System Path Prompts	使用系统路径提示
+Use System Prompts	使用系统提示
+Use System Window Tabs	使用系统窗口标签
+Use gitignored files when searching.	搜索时使用被 gitignore 忽略的文件。
+Use native OS dialogs for confirmations.	使用操作系统原生对话框进行确认。
+Use regex search by default in Vim search.	在 Vim 搜索中默认使用正则搜索。
+Use regex search by default.	默认使用正则搜索。
+Version Control	版本控制
+Vertical Scroll Margin	垂直滚动边距
+Vertical Scrollbar	垂直滚动条
+Vertical Split Direction	垂直拆分方向
+Vim Mode	Vim 模式
+Vim/Emacs Modeline Support	Vim/Emacs 模式行支持
+Visit the	访问
+Web Search	网络搜索
+Web search queries	网络搜索查询
+What shell to use when opening a terminal.	打开终端时使用的 shell。
+What to do after closing the current tab.	关闭当前标签页后的行为。
+What to do when the last window is closed.	关闭最后一个窗口时的行为。
+What to show when opening a new window.	打开新窗口时显示的内容。
+When Closing With No Tabs	没有标签页时关闭的行为
+When to auto save buffer changes.	自动保存缓冲区更改的时机。
+When to hide the mouse cursor.	隐藏鼠标光标的时机。
+When to scan content of linked directories	扫描链接目录内容的时机
+When to show the minimap in the editor.	在编辑器中显示缩略图的时机。
+When to show the minimap thumb.	显示缩略图滑块的时机。
+When to show the scrollbar in the editor.	在编辑器中显示滚动条的时机。
+Where to dock the Git panel.	Git 面板的停靠位置。
+Where to dock the agent panel.	智能体面板的停靠位置。
+Where to dock the collaboration panel.	协作面板的停靠位置。
+Where to dock the outline panel.	大纲面板的停靠位置。
+Where to dock the project panel.	项目面板的停靠位置。
+Where to dock the terminal panel.	终端面板的停靠位置。
+Where to show the minimap in the editor.	在编辑器中显示缩略图的位置。
+Whether other hints should be shown.	是否显示其他提示。
+Whether parameter hints should be shown.	是否显示参数提示。
+Whether the cursor blinks in the editor.	编辑器中的光标是否闪烁。
+Whether to automatically close JSX tags.	是否自动闭合 JSX 标签。
+Whether to disable all AI features in Zed.	是否禁用 Zed 中的所有 AI 功能。
+Whether to fetch LSP completions or not.	是否获取 LSP 补全。
+Whether to show diagnostics inline or not.	是否内联显示诊断。
+Whether type hints should be shown.	是否显示类型提示。
+Whole Word	全词匹配
+Window & Layout	窗口与布局
+Window Decorations	窗口装饰
+Word Diff Enabled	启用词级差异
+Words Min Length	单词最小长度
+Wrap Guides	换行参考线
+Write File	写入文件
+Zoomed Padding	缩放内边距
+(Linux only) choose how window control buttons are laid out in the titlebar.	（仅 Linux）选择标题栏中窗口控制按钮的排列方式。
+(Linux only) whether Zed or your compositor should draw window decorations.	（仅 Linux）由 Zed 还是合成器绘制窗口装饰。
+(macOS only) whether to allow Windows to tab together.	（仅 macOS）是否允许窗口合并为标签页。
+(macOS only) which fullscreen mode the toggle fullscreen action enters.	（仅 macOS）切换全屏操作进入哪种全屏模式。
+A client secret is required to connect this server	连接此服务器需要客户端密钥
+Additional code actions to run when formatting.	格式化时额外运行的代码操作。
+Agents connected through the Agent Client Protocol.	通过智能体客户端协议连接的智能体。
+Amount of time to wait before changing focus.	更改焦点前的等待时间。
+An optional string to override the title of the terminal tab.	用于覆盖终端标签页标题的可选字符串。
+Automatically close files that have been deleted.	自动关闭已删除的文件。
+Automatically open menus in the titlebar on hover.	悬停时自动打开标题栏中的菜单。
+Automatically show a signature help pop-up.	自动弹出签名帮助。
+Border style for the minimap's scrollbar thumb.	缩略图滚动条滑块的边框样式。
+Character counts at which to show wrap guides in the editor.	在编辑器中显示换行参考线的字符数位置。
+Character counts at which to show wrap guides.	显示换行参考线的字符数位置。
+Control when to show the active encoding in the status bar.	控制状态栏中何时显示活动编码。
+Control whether Git status is shown in the editor's gutter.	控制编辑器边栏是否显示 Git 状态。
+Controls automatic indentation behavior when typing.	控制输入时的自动缩进行为。
+Controls the appearance behavior of the tab's close button.	控制标签页关闭按钮的显示行为。
+Controls when to use system clipboard in Vim mode.	控制 Vim 模式下何时使用系统剪贴板。
+Controls where the `editor::rewrap` action is allowed for this language.	控制此语言中允许使用 `editor::rewrap` 操作的位置。
+Controls whether edit predictions are shown immediately or manually.	控制编辑预测是立即显示还是手动触发。
+Cursor shape for insert mode. Inherit uses the editor's cursor shape.	插入模式的光标形状。「继承」表示沿用编辑器的光标形状。
+Custom line height value (must be at least 1.0).	自定义行高值（不得小于 1.0）。
+Debounce threshold in milliseconds after which changes are reflected in the Git gutter.	更改反映到 Git 边栏的防抖阈值（毫秒）。
+Default Prettier options, in the format as in package.json section for Prettier.	Prettier 的默认选项，格式与 package.json 中的 Prettier 配置段一致。
+Default action when clicking a changed file in the Git panel.	在 Git 面板中点击已更改文件的默认操作。
+Default branch name will be when init.defaultbranch is not set in Git.	当 Git 未设置 init.defaultbranch 时使用的默认分支名。
+Default cursor shape for the terminal (bar, block, underline, or hollow).	终端的默认光标形状（竖线、方块、下划线或空心）。
+Default depth to expand outline items in the current file.	当前文件中大纲项的默认展开深度。
+Default height when the agent panel is docked to the bottom.	智能体面板停靠到底部时的默认高度。
+Default height when the terminal is docked to the bottom (in pixels).	终端停靠到底部时的默认高度（像素）。
+Default timeout in seconds for MCP server tool calls.	MCP 服务器工具调用的默认超时时间（秒）。
+Default width of the collaboration panel in pixels.	协作面板的默认宽度（像素）。
+Default width of the outline panel in pixels.	大纲面板的默认宽度（像素）。
+Default width of the project panel in pixels.	项目面板的默认宽度（像素）。
+Default width when the terminal is docked to the left or right (in pixels).	终端停靠到左侧或右侧时的默认宽度（像素）。
+Delay in milliseconds before drag and drop selection starts.	开始拖放选择前的延迟（毫秒）。
+Delay in milliseconds before the which-key menu appears.	Which-key 菜单出现前的延迟（毫秒）。
+Delay in milliseconds before tooltips appear for project panel titles.	项目面板标题提示出现前的延迟（毫秒）。
+Delay in milliseconds of the project panel title tooltips.	项目面板标题提示的延迟（毫秒）。
+Determines how indent guide backgrounds are colored.	决定缩进参考线背景的着色方式。
+Determines how snippets are sorted relative to other completion items.	决定代码片段相对于其他补全项的排序方式。
+Determines the stepping granularity for debug operations.	决定调试操作的单步粒度。
+Disable all Git integration features in Zed.	禁用 Zed 中所有 Git 集成功能。
+Display the terminal title in breadcrumbs inside the terminal pane.	在终端窗格的面包屑中显示终端标题。
+Duration in milliseconds to highlight yanked text in Vim mode.	Vim 模式下复制文本的高亮持续时间（毫秒）。
+Enable Preview Multibuffer From Code Navigation	从代码导航启用多重缓冲区预览
+Enable to show entries in tree view list, disable to show in flat view list.	启用则在树视图中显示条目，禁用则在平铺视图中显示。
+Enables or disables formatting with Prettier for a given language.	为指定语言启用或禁用 Prettier 格式化。
+Extra task variables to set for a particular language.	为特定语言设置的额外任务变量。
+Fast scroll sensitivity multiplier for both horizontal and vertical scrolling.	水平和垂直滚动的快速滚动灵敏度倍率。
+Font fallbacks for terminal text. If not set, defaults to buffer font fallbacks.	终端文本的字体回退。未设置时，默认使用缓冲区字体的回退。
+Font family for code blocks in the markdown preview. Falls back to the editor font family.	Markdown 预览中代码块的字体。未设置时回退到编辑器字体。
+Font family for terminal text. If not set, defaults to buffer font family.	终端文本的字体。未设置时，默认使用缓冲区字体。
+Font family for the markdown preview. Falls back to the UI font family.	Markdown 预览的字体。未设置时回退到界面字体。
+Font size for terminal text. If not set, defaults to buffer font size.	终端文本的字号。未设置时，默认使用缓冲区字号。
+Font size for the markdown preview. Falls back to the editor font size.	Markdown 预览的字号。未设置时回退到编辑器字号。
+Font size for user messages text in the agent panel.	智能体面板中用户消息文本的字号。
+Font weight for headings in the markdown preview, in CSS units from 100 to 900.	Markdown 预览中标题的字重，按 CSS 单位取值 100 到 900。
+Font weight for terminal text in CSS weight units (100-900).	终端文本的字重，按 CSS 字重单位（100-900）。
+Global switch to toggle inline values on and off when debugging.	调试时开关内联值的全局设置。
+Globs to match against file paths to determine if a file is private.	用于匹配文件路径以判定文件是否为私有文件的通配模式。
+Hide the values of variables in private files.	隐藏私有文件中变量的值。
+Highlight all occurrences of selected text.	高亮选中文本的所有出现位置。
+How Git hunks are displayed visually in the editor.	Git 区块在编辑器中的可视化显示方式。
+How `zed <path>` opens directories when no flag is specified.	未指定标志时 `zed <path>` 打开目录的方式。
+How and when the scrollbar should be displayed.	滚动条的显示方式与时机。
+How line endings should be handled for new files and during format and save operations.	新建文件以及格式化和保存操作时行尾符的处理方式。
+How many lines of context to provide in multibuffer excerpts by default.	多重缓冲区摘要默认提供的上下文行数。
+How many lines to expand the multibuffer excerpts by default.	默认展开多重缓冲区摘要的行数。
+How much to fade out unused code (0.0 - 0.9).	未使用代码的淡化程度（0.0 - 0.9）。
+How to highlight the current line in the minimap.	缩略图中当前行的高亮方式。
+How to render LSP color previews in the editor.	在编辑器中渲染 LSP 颜色预览的方式。
+How to scroll the target into view when navigating to a definition or reference.	导航到定义或引用时将目标滚动到可视区域的方式。
+Include ignored files in search results by default.	默认在搜索结果中包含已忽略的文件。
+Key-value pairs to add to the terminal's environment.	添加到终端环境中的键值对。
+Manage servers connected directly or via extensions.	管理直接连接或通过扩展连接的服务器。
+Maximum length of the commit message title before a warning is shown. Set to 0 to disable.	显示警告前提交信息标题的最大长度。设为 0 可禁用。
+Maximum number of columns to display in the minimap.	缩略图中显示的最大列数。
+Maximum open tabs in a pane. Will not close an unsaved tab.	窗格中最多打开的标签页数。不会关闭未保存的标签页。
+Minimum number of characters to reserve space for in the gutter.	边栏中预留空间的最小字符数。
+Minimum number of lines to display in the agent message editor.	智能体消息编辑器中显示的最小行数。
+Minimum time to wait before pulling diagnostics from the language server(s).	从语言服务器拉取诊断信息前的最小等待时间。
+No active project found. Open a workspace to manage MCP servers.	未找到活动项目。请打开一个工作区以管理 MCP 服务器。
+No active project found. Open a workspace to manage external agents.	未找到活动项目。请打开一个工作区以管理外部智能体。
+No regex matches, using the default action.	没有正则匹配，将使用默认操作。
+Number of lines to search for modelines (set to 0 to disable).	搜索模式行的行数（设为 0 可禁用）。
+Padding between the end of the source line and the start of the inline blame in columns.	源代码行末尾与内联追溯信息起始处之间的列间距。
+Pattern preview differs from engine — showing authoritative result.	模式预览与引擎结果不一致 — 正在显示权威结果。
+Restore previous file state when reopening.	重新打开时恢复此前的文件状态。
+Save after inactivity period (in milliseconds).	无操作一段时间后保存（毫秒）。
+Scroll sensitivity multiplier for both horizontal and vertical scrolling.	水平和垂直滚动的灵敏度倍率。
+Select which provider to use for edit predictions.	选择用于编辑预测的提供方。
+Send anonymized usage data like what languages you're using Zed with.	发送匿名使用数据，例如你使用 Zed 编写哪些语言。
+Sets the cursor blinking behavior in the terminal.	设置终端中光标的闪烁行为。
+Should the name or path be displayed first in the git view.	Git 视图中先显示名称还是路径。
+Show a badge on the terminal panel icon with the count of open terminals.	在终端面板图标上显示已打开终端数量的徽标。
+Show a git status indicator next to file names in the project panel.	在项目面板的文件名旁显示 Git 状态指示器。
+Show agent review buttons in the editor toolbar.	在编辑器工具栏中显示智能体审阅按钮。
+Show author name as part of the commit information in branch picker.	在分支选择器的提交信息中显示作者名。
+Show banners announcing new features in the titlebar.	在标题栏中显示新功能公告横幅。
+Show buffer search result indicators in the scrollbar.	在滚动条中显示缓冲区搜索结果指示。
+Show code action button at start of buffer line.	在缓冲区行首显示代码操作按钮。
+Show code action buttons in the editor toolbar.	在编辑器工具栏中显示代码操作按钮。
+Show commit summary as part of the inline blame.	在内联追溯信息中显示提交摘要。
+Show error and warning count badges next to file names in the project panel.	在项目面板的文件名旁显示错误和警告数量徽标。
+Show file icons next to the Git status icon.	在 Git 状态图标旁显示文件图标。
+Show git status indicators on the branch icon in the titlebar.	在标题栏的分支图标上显示 Git 状态指示。
+Show pinned tabs in a separate row above unpinned tabs.	在未固定标签页上方单独一行显示已固定的标签页。
+Show quick action buttons (e.g., search, selection, editor controls, etc.).	显示快捷操作按钮（如搜索、选择、编辑器控制等）。
+Show selected symbol occurrences in the scrollbar.	在滚动条中显示选中符号的出现位置。
+Show selected text occurrences in the scrollbar.	在滚动条中显示选中文本的出现位置。
+Show the Git panel button in the status bar.	在状态栏中显示 Git 面板按钮。
+Show the active language button in the status bar.	在状态栏中显示活动语言按钮。
+Show the active line endings button in the status bar.	在状态栏中显示活动行尾符按钮。
+Show the avatar of the author of the commit.	显示提交作者的头像。
+Show the branch name button in the titlebar.	在标题栏中显示分支名按钮。
+Show the collaboration panel button in the status bar.	在状态栏中显示协作面板按钮。
+Show the cursor position button in the status bar.	在状态栏中显示光标位置按钮。
+Show the debugger button in the status bar.	在状态栏中显示调试器按钮。
+Show the informational hover box when moving the mouse over symbols in the editor.	在编辑器中将鼠标移到符号上时显示信息悬浮框。
+Show the name of the active file in the status bar.	在状态栏中显示活动文件的名称。
+Show the navigation history buttons in the tab bar.	在标签栏中显示导航历史按钮。
+Show the outline panel button in the status bar.	在状态栏中显示大纲面板按钮。
+Show the project diagnostics button in the status bar.	在状态栏中显示项目诊断按钮。
+Show the project host and name in the titlebar.	在标题栏中显示项目主机和名称。
+Show the project panel button in the status bar.	在状态栏中显示项目面板按钮。
+Show the project search button in the status bar.	在状态栏中显示项目搜索按钮。
+Show the selections menu in the editor toolbar.	在编辑器工具栏中显示选择菜单。
+Show the signature help pop-up after completions or bracket pairs are inserted.	在插入补全项或成对括号后弹出签名帮助。
+Show the tab bar buttons (New, Split Pane, Zoom).	显示标签栏按钮（新建、拆分窗格、缩放）。
+Show the terminal button in the status bar.	在状态栏中显示终端按钮。
+Show the worktree name button in the titlebar.	在标题栏中显示工作树名称按钮。
+Show voting thumbs up/down icon buttons for feedback on agent edits.	显示赞/踩图标按钮，用于对智能体编辑提供反馈。
+Size of the border surrounding the active pane.	活动窗格周围边框的大小。
+Sort order for entries in the project panel.	项目面板中条目的排序方式。
+Spacing between worktree entries in the project panel.	项目面板中工作树条目之间的间距。
+Start searching as you type in project search, without pressing Enter.	在项目搜索中输入时即开始搜索，无需按回车。
+The Ollama model to use for edit predictions.	用于编辑预测的 Ollama 模型。
+The OpenType features to enable for rendering in UI elements.	界面元素渲染中启用的 OpenType 特性。
+The OpenType features to enable for rendering in text buffers.	文本缓冲区渲染中启用的 OpenType 特性。
+The URL of your OpenAI-compatible server's completions API.	你的 OpenAI 兼容服务器的补全 API 地址。
+The arguments to pass to the shell program.	传递给 shell 程序的参数。
+The column at which to soft-wrap lines, for buffers where soft-wrap is enabled.	启用自动换行的缓冲区中，软换行的列位置。
+The custom set of icons Zed will associate with files and directories.	Zed 关联到文件和目录的自定义图标集。
+The debounce delay before querying highlights from the language.	从语言查询高亮前的防抖延迟。
+The delay after which the inline blame information is shown.	显示内联追溯信息前的延迟。
+The delay in milliseconds to show inline diagnostics after the last diagnostic update.	最后一次诊断更新后显示内联诊断的延迟（毫秒）。
+The directory path to use (will be shell expanded).	使用的目录路径（会经 shell 展开）。
+The font fallbacks to use for rendering in text buffers.	文本缓冲区渲染使用的字体回退。
+The font fallbacks to use for rendering in the UI.	界面渲染使用的字体回退。
+The list of language servers to use (or disable) for this language.	此语言使用（或禁用）的语言服务器列表。
+The minimum APCA perceptual contrast between foreground and background colors (0-106).	前景色与背景色之间的最小 APCA 感知对比度（0-106）。
+The minimum column at which to display inline diagnostics.	显示内联诊断的最小列位置。
+The minimum column number at which to show the inline blame information.	显示内联追溯信息的最小列号。
+The model string to pass to the OpenAI-compatible server.	传递给 OpenAI 兼容服务器的模型字符串。
+The multiplier for scrolling in the terminal with the mouse wheel	使用鼠标滚轮在终端中滚动的倍率
+The name of a base set of key bindings to use.	要使用的基础快捷键方案名称。
+The number of characters to keep on either side when scrolling with the mouse.	用鼠标滚动时在两侧保留的字符数。
+The number of lines to keep above/below the cursor when auto-scrolling.	自动滚动时在光标上下保留的行数。
+The width of the active indent guide in pixels, between 1 and 10.	活动缩进参考线的宽度（像素），取值 1 到 10。
+The width of the indent guides in pixels, between 1 and 10.	缩进参考线的宽度（像素），取值 1 到 10。
+This project is in restricted mode. Some project settings may not apply.	此项目处于受限模式。部分项目设置可能不会生效。
+Time in milliseconds until timeout error when connecting to a TCP debug adapter.	连接 TCP 调试适配器的超时时间（毫秒）。
+Time to wait in milliseconds before hiding the hover popover after the mouse moves away.	鼠标移开后隐藏悬浮弹窗的等待时间（毫秒）。
+Time to wait in milliseconds before showing the informational hover box.	显示信息悬浮框前的等待时间（毫秒）。
+Toggles inlay hints (hides or shows) when the user presses the modifiers specified.	用户按下指定修饰键时切换嵌入提示（隐藏或显示）。
+Use LSP tasks over Zed language extension tasks.	优先使用 LSP 任务而非 Zed 语言扩展任务。
+Use native OS dialogs for 'Open' and 'Save As'.	「打开」和「另存为」使用操作系统原生对话框。
+What to do when multibuffer is double-clicked in some of its excerpts.	在某些摘要中双击多重缓冲区时的行为。
+What to do when using the 'close active item' action with no tabs.	在没有标签页时执行「关闭活动项」操作的行为。
+What to restore from the previous session when opening Zed.	打开 Zed 时从上次会话恢复的内容。
+What to show for directories in the git panel.	Git 面板中目录的显示内容。
+What to show for directories in the outline panel.	大纲面板中目录的显示内容。
+What to show for directories in the project panel.	项目面板中目录的显示内容。
+What working directory to use when launching the terminal.	启动终端时使用的工作目录。
+When enabled, agent edits will also be displayed in single-file buffers for review.	启用后，智能体的编辑也会显示在单文件缓冲区中供审阅。
+When enabled, use folding ranges from the language server instead of indent-based folding.	启用后，使用语言服务器的折叠范围而非基于缩进的折叠。
+When false, forcefully disables the horizontal scrollbar.	为 false 时，强制禁用水平滚动条。
+When false, forcefully disables the vertical scrollbar.	为 false 时，强制禁用垂直滚动条。
+When to populate a new search's query based on the text under the cursor.	何时根据光标下的文本填充新搜索的查询内容。
+When to show indent guides in the outline panel.	在大纲面板中显示缩进参考线的时机。
+When to show the scrollbar in the completion menu.	在补全菜单中显示滚动条的时机。
+When to show the scrollbar in the terminal.	在终端中显示滚动条的时机。
+Where to render Git blame when it is enabled.	启用 Git 追溯时其渲染位置。
+Whether and how to display code lenses from language servers.	是否以及如何显示来自语言服务器的代码透镜。
+Whether breakpoints should be reused across Zed sessions.	断点是否应在 Zed 各会话之间复用。
+Whether indentation of pasted content should be adjusted based on the context.	粘贴内容的缩进是否应根据上下文进行调整。
+Whether newly opened file diffs show the full file instead of changes only.	新打开的文件差异是否显示完整文件而非仅显示更改。
+Whether opening a folder in an existing window automatically opens the Threads Sidebar.	在现有窗口中打开文件夹时是否自动打开会话侧边栏。
+Whether or not to automatically check for updates.	是否自动检查更新。
+Whether or not to ensure there's a single newline at the end of a buffer when saving it.	保存缓冲区时是否确保末尾有且仅有一个换行。
+Whether or not to remove any trailing whitespace from lines of a buffer before saving it.	保存缓冲区前是否移除行尾的所有空白字符。
+Whether or not to restore unsaved buffers on restart.	重启时是否恢复未保存的缓冲区。
+Whether or not to show Git blame data for the currently focused line.	是否显示当前聚焦行的 Git 追溯数据。
+Whether selecting text in the terminal automatically copies to the system clipboard.	在终端中选中文本时是否自动复制到系统剪贴板。
+Whether tasks are enabled for this language.	是否为此语言启用任务。
+Whether the commit message editor is shown in the Git panel by default.	Git 面板中是否默认显示提交信息编辑器。
+Whether the cursor smoothly animates when moving around the editor.	光标在编辑器中移动时是否显示平滑动画。
+Whether the editor search results will loop.	编辑器搜索结果是否循环。
+Whether the editor will scroll beyond the last line.	编辑器是否可滚动到最后一行之后。
+Whether the file finder should skip focus for the active file in search results.	文件查找器是否应在搜索结果中跳过对活动文件的聚焦。
+Whether the git panel should open on startup.	启动时是否打开 Git 面板。
+Whether the microphone should be muted when joining a channel or a call.	加入频道或通话时是否将麦克风静音。
+Whether the option key behaves as the meta key.	Option 键是否表现为 Meta 键。
+Whether the project panel should open on startup.	启动时是否打开项目面板。
+Whether the terminal panel should open on startup.	启动时是否打开终端面板。
+Whether the text selection should have rounded corners.	文本选区是否使用圆角。
+Whether to align detail text in code completions context menus left or right.	代码补全上下文菜单中的详情文本左对齐还是右对齐。
+Whether to always use cmd-enter (or ctrl-enter on Linux or Windows) to send messages.	是否始终使用 cmd-enter（Linux 或 Windows 上为 ctrl-enter）发送消息。
+Whether to automatically enable case-sensitive search based on the search query.	是否根据搜索内容自动启用区分大小写搜索。
+Whether to automatically open Markdown files in the preview.	是否自动以预览方式打开 Markdown 文件。
+Whether to automatically open files after pasting or duplicating them.	粘贴或复制文件后是否自动打开。
+Whether to automatically open files dropped from external sources.	是否自动打开从外部拖入的文件。
+Whether to automatically open newly created files in the editor.	是否在编辑器中自动打开新建的文件。
+Whether to center the current match in the editor	是否将编辑器中的当前匹配项居中
+Whether to change focus to a pane when the mouse hovers over it.	鼠标悬停在窗格上时是否将焦点切换到该窗格。
+Whether to collapse untracked files in the diff panel.	是否在差异面板中折叠未跟踪的文件。
+Whether to colorize brackets in the editor.	是否在编辑器中为括号着色。
+Whether to display inline and alongside documentation for items in the completions menu.	是否在补全菜单项中内联并并列显示文档。
+Whether to enable automatic language detection in unsaved buffers.	是否在未保存的缓冲区中启用自动语言检测。
+Whether to enable drag-and-drop operations in the project panel.	是否在项目面板中启用拖放操作。
+Whether to fold directories automatically when a directory contains only one subdirectory.	当目录仅包含一个子目录时是否自动折叠。
+Whether to follow-up empty Go to definition responses from the language server.	是否跟进语言服务器返回的空「转到定义」响应。
+Whether to format DAP messages when adding them to debug adapter logger.	将 DAP 消息添加到调试适配器日志记录器时是否格式化。
+Whether to have edit cards in the agent panel expanded, showing a Preview of the diff.	智能体面板中的编辑卡片是否展开，以显示差异预览。
+Whether to hide the gitignore entries in the project panel.	是否在项目面板中隐藏被 gitignore 忽略的条目。
+Whether to hide the hidden entries in the project panel.	是否在项目面板中隐藏隐藏条目。
+Whether to hide the root entry when only one folder is open in the window.	窗口中仅打开一个文件夹时是否隐藏根条目。
+Whether to indent lines using tab characters, as opposed to multiple spaces.	是否使用制表符而非多个空格进行缩进。
+Whether to keep the system awake while agent threads are running.	智能体会话运行期间是否保持系统唤醒。
+Whether to keep the text selection after copying it to the clipboard.	将文本复制到剪贴板后是否保留选区。
+Whether to log messages between active debug adapters and Zed.	是否记录活动调试适配器与 Zed 之间的消息。
+Whether to open tabs in preview mode when code navigation is used to open a multibuffer.	通过代码导航打开多重缓冲区时是否以预览模式打开标签页。
+Whether to open tabs in preview mode when code navigation is used to open a single file.	通过代码导航打开单个文件时是否以预览模式打开标签页。
+Whether to open tabs in preview mode when opened from a multibuffer.	从多重缓冲区打开时是否以预览模式打开标签页。
+Whether to open tabs in preview mode when selected from the file finder.	从文件查找器中选择时是否以预览模式打开标签页。
+Whether to pull for language server-powered diagnostics or not.	是否拉取由语言服务器提供的诊断信息。
+Whether to reveal when a corresponding outline entry becomes active.	当对应的大纲条目变为活动状态时是否显示它。
+Whether to scroll when clicking near the edge of the visible text area.	在可见文本区域边缘附近点击时是否滚动。
+Whether to show a badge on the git panel icon with the count of uncommitted changes.	是否在 Git 面板图标上显示未提交更改数量的徽标。
+Whether to show folder names with bold text in the project panel.	是否在项目面板中以粗体显示文件夹名称。
+Whether to show tabs and spaces in the editor.	是否在编辑器中显示制表符和空格。
+Whether to show the addition/deletion change count next to each file in the Git panel.	是否在 Git 面板中每个文件旁显示新增/删除的更改数量。
+Whether to show the agent panel button in the status bar.	是否在状态栏中显示智能体面板按钮。
+Whether to show the stage and restore buttons on diff hunks.	是否在差异区块上显示暂存和恢复按钮。
+Whether to show warnings or not by default.	默认是否显示警告。
+Whether to sort file and folder names case-sensitively in the project panel.	项目面板中文件名和文件夹名是否区分大小写排序。
+Whether to start a new line with a comment when a previous line is a comment as well.	当上一行也是注释时，新行是否以注释开头。
+Whether to stick parent directories at top of the project panel.	是否将父目录固定在项目面板顶部。
+Whether to stick scopes to the top of the editor	是否将作用域固定在编辑器顶部
+Whether to suggest installing extensions based on the files you open.	是否根据你打开的文件推荐安装扩展。
+Whether to use command history ranking for sorting in the command palette.	命令面板中是否使用命令历史排名进行排序。
+Whether to use language servers to provide code intelligence.	是否使用语言服务器提供代码智能。
+Whether your current project should be shared when joining an empty channel.	加入空频道时是否共享你当前的项目。
+Which diagnostic indicators to show in the scrollbar.	在滚动条中显示哪些诊断指示。
+Which files containing diagnostic errors/warnings to mark in the project panel.	在项目面板中标记哪些包含诊断错误/警告的文件。
+Which files containing diagnostic errors/warnings to mark in the tabs.	在标签页中标记哪些包含诊断错误/警告的文件。
+Which level to use to filter out diagnostics displayed in the editor.	用于过滤编辑器中显示的诊断的级别。
+Which settings should be activated only in Preview build of Zed.	哪些设置仅在 Zed 的预览版中启用。
+Which side of the window the Threads Sidebar appears on.	会话侧边栏出现在窗口的哪一侧。
+Width in pixels of the git diff indicators.	Git 差异指示的宽度（像素）。
+Width of the git diff indicators in the gutter. Default scales with the buffer font size.	边栏中 Git 差异指示的宽度。默认随缓冲区字号缩放。
+Actions…	操作…
+Add Agent	添加智能体
+Add code cell	添加代码单元格
+Add Keybinding…	添加快捷键…
+Add markdown cell	添加 Markdown 单元格
+Add Model	添加模型
+Add Provider	添加提供方
+Add Server	添加服务器
+Assign Keybinding	分配快捷键
+Automate Setup	自动设置
+Backup & Update	备份与更新
+Backup and Update	备份与更新
+Bad Prediction	较差的预测
+Both Icons	两侧图标
+Browse GGUF Models	浏览 GGUF 模型
+Change Keybinding…	更改快捷键…
+Choose from Local Folders	从本地文件夹中选择
+Clear All	全部清除
+Commit SHA	提交 SHA
+Configure Server	配置服务器
+Confirm Selections	确认选择
+Continue Iterating	继续迭代
+Copy Report	复制报告
+Create a Skill	创建技能
+Create Branch	创建分支
+Debugger Docs	调试器文档
+Debugger Extensions	调试器扩展
+Discard draft	丢弃草稿
+Download LM Studio	下载 LM Studio
+Download Ollama	下载 Ollama
+Edit debug.json	编辑 debug.json
+Edit in debug.json	在 debug.json 中编辑
+Edit in JSON	在 JSON 中编辑
+Edit in settings.json	在 settings.json 中编辑
+Edit Keymap File	编辑快捷键映射文件
+End Icon	结束图标
+Export as JSON	导出为 JSON
+Find and replace	查找与替换
+Finish Setup	完成设置
+Fix in settings.json	在 settings.json 中修复
+Fixed Width	固定宽度
+Full Width	全宽
+Get llama.cpp	获取 llama.cpp
+Good Prediction	良好的预测
+Got it	知道了
+Icon Color	图标颜色
+Import Threads	导入会话
+Include/exclude specific paths	包含/排除特定路径
+Initialize Repository	初始化仓库
+Install Dev Extension	安装开发扩展
+Install Icon Themes	安装图标主题
+Install Themes	安装主题
+Keep All	全部保留
+Kernel Docs	内核文档
+Launch Custom	启动自定义
+Learn more	了解更多
+Learn more about sandboxing	进一步了解沙箱
+llama.cpp	llama.cpp
+LM Studio	LM Studio
+Log level	日志级别
+Manage Subscription	管理订阅
+Manage Trust	管理信任
+Match case	区分大小写
+Match whole words	全词匹配
+Match with regex	使用正则匹配
+Model Catalog	模型目录
+New Session	新建会话
+New Thread	新建会话
+Open Agent Panel	打开智能体面板
+Open devcontainer.json	打开 devcontainer.json
+Open Documentation	打开文档
+Open in New Window	在新窗口中打开
+Open in WSL	在 WSL 中打开
+Open Repository	打开仓库
+Open WebUI	打开 WebUI
+Reject All	全部拒绝
+Remove Folder	移除文件夹
+Remove from Window	从窗口中移除
+Remove Provider	移除提供方
+Renew Now	立即续订
+Reset API Key	重置 API 密钥
+Reset API URL	重置 API 地址
+Resolve with Agent	让智能体解决
+Restore All	全部恢复
+Restore Checkpoint	恢复检查点
+Return to Onboarding	返回新手引导
+Review Diff	审阅差异
+Save Provider	保存提供方
+Save Report…	保存报告…
+See Docs	查看文档
+Select Feature	选择功能
+Select Model	选择模型
+Show Error Logs	显示错误日志
+Sign In to Try GPT Luna	登录以试用 GPT Luna
+Sign In to use Zed AI	登录以使用 Zed AI
+Start Dev Container	启动开发容器
+Start Icon	起始图标
+Start New Thread	开始新会话
+Stay in Restricted Mode	保持受限模式
+Subscribe on GitHub	在 GitHub 上订阅
+Switch Direction	切换方向
+This Window	此窗口
+Toggle Staged	切换暂存状态
+Tools Unsupported	不支持工具
+Trace level	跟踪级别
+Trust and Continue	信任并继续
+Trust Directory	信任目录
+Unstage All	全部取消暂存
+Update Settings	更新设置
+Upgrade to Zed Pro	升级到 Zed Pro
+Use Both	两者都用
+View All Models	查看所有模型
+View Branch Diff	查看分支差异
+View Commit	查看提交
+View Default Keymap	查看默认快捷键映射
+View Documentation	查看文档
+View Icon Theme Docs	查看图标主题文档
+View Theme Docs	查看主题文档
+
+# ===== 补齐首屏与其余遗漏 =====
+GET STARTED	快速开始
+CONFIGURE	配置
+Welcome to Zed	欢迎使用 Zed
+Open Recent Project	打开最近的项目
+Run multiple threads at once, mix and match any ACP-compatible agent, and keep work conflict-free with worktrees.	同时运行多个会话，自由混用任何兼容 ACP 的智能体，并借助工作树保持互不冲突。
+1 global rule	1 条全局规则
+Search settings…	搜索设置…
+Search Settings…	搜索设置…
+Project Search	项目搜索
+New Update Available	有新版本可用
+Restart	重启
+Search all files…	搜索所有文件…
+At Cursor	在光标处
+Contact…	联系…
+Do you want to leave the current call?	确定要离开当前通话吗？
+Passwords…	密码…
+Restricted mode prevents:	受限模式阻止以下操作：
+Thread has an Error	会话出现错误
+Thread reached the token limit	会话已达到 token 上限
+Trust all projects in parent directory	信任父目录中的所有项目
+Underlined Highlight	下划线高亮
+Very Long API Error Description	很长的 API 错误描述
+Waiting for Confirmation	等待确认
+Web Search Failed	网络搜索失败
+Your settings contain deprecated values	你的设置包含已弃用的值
+Your settings file uses deprecated settings	你的设置文件使用了已弃用的设置
+Always save on quit	退出时始终保存
+Build Failed	构建失败
+Operation completed successfully	操作成功完成
+Connection error: unable to connect to server	连接错误：无法连接到服务器
+Click to toggle	点击切换
+Deprecated Feature	已弃用的功能
+Language task	语言任务
+Rust task	Rust 任务
+Task without variables	不含变量的任务
+Run language task	运行语言任务
+Search the project.	搜索项目。
+Compact the conversation so far.	压缩目前的对话内容。
+Retain this context.	保留此上下文。
+Completed thinking	思考完成
+Finished reasoning.	推理完成。
+Thinking about the answer	正在思考答案
+Checked what information is needed.	已确认需要哪些信息。
+I should search	我应该搜索
+Apply a patch	应用补丁
+Second part	第二部分
+Summary without deltas	不含差异的摘要
+This is a reasoning summary, not assistant output.	这是推理摘要，不是助手输出。
+Ignored task without type	已忽略无类型的任务
+Show $ZED_GIT_SHA_SHORT in $ZED_GIT_REPOSITORY_NAME	在 $ZED_GIT_REPOSITORY_NAME 中显示 $ZED_GIT_SHA_SHORT
+Close {} Dock	关闭{}停靠栏
+Dock {}	停靠到{}
+Toggle {} Tab	切换{}标签页
+{} Folder	{}文件夹
+New {} Thread	新建{}会话
+{} Preview	{}预览
+Select {}	选择{}
+Follow {}	跟随{}
+Stop Following {}	停止跟随{}
+Follow {} to their active project	跟随{}到其活跃项目
+Stop Following the {}	停止跟随{}
+Invite {} to join	邀请{}加入
+Invite {username} to Join Call	邀请{username}加入通话
+Search the web for {}	搜索网络：{}
+Go to definition of `{}`	跳转到 `{}` 的定义
+Find references to `{}`	查找 `{}` 的引用
+Run MCP tool `{}`	运行 MCP 工具 `{}`
+Rename {src} to {filename}	将 {src} 重命名为 {filename}
+Show {} more{}	再显示 {} 项{}
+Show {} warnings	显示 {} 条警告
+Show {} warning{}	显示 {} 条警告
+Discard changes to {}?	放弃对 {} 的更改？
+Remove server `{}`?	移除服务器 `{}`？
+Remove WSL distro `{}`?	移除 WSL 发行版 `{}`？
+Trust all projects in the {:} folder	信任 {:} 文件夹中的所有项目
+Upgrade {} to work with Zed	升级 {} 以配合 Zed 使用
+View on {}	在 {} 上查看
+Update to v{}	更新到 v{}
+Update view to '{active_tab_name}'	视图切换为『{active_tab_name}』
+Open a new window ({})	在新窗口中打开（{}）
+Add to existing Zed window ({})	添加到现有 Zed 窗口（{}）
+Line {}, column {}	第 {} 行，第 {} 列
+Lines {}- {}	第 {}–{} 行
+Lines {start_line}-{end_line}	第 {start_line}–{end_line} 行
+Loading {}…	正在加载 {}…
+Installing {}…	正在安装 {}…
+Installing {extension_id} extension…	正在安装 {extension_id} 扩展…
+Downloading {}...	正在下载 {}...
+No settings match "{}"	没有匹配「{}」的设置
+No components matching '{}'.	没有匹配「{}」的组件。
+No definition found for '{}'.	未找到「{}」的定义。
+No references found for '{}'.	未找到「{}」的引用。
+Zoom {percentage}%	缩放 {percentage}%
+Restarting {}	正在重启 {}
+Run {} {} (package: {})	运行 {} {}（包：{}）
+Test '{}' (package: {})	测试 '{}'（包：{}）
+Test (package: {})	测试（包：{}）
+Run code on {} ({})	在 {} 上运行代码（{}）
+Start REPL for {}	为 {} 启动 REPL
+Add {}-Compatible Provider	添加 {} 兼容提供商
+Configure {}	配置 {}
+Connect {} to Zed	将 {} 连接到 Zed
+Edit {}	编辑{}
+Expand {}	展开{}
+Collapse {}	折叠{}
+Upgrade {}	升级{}
+Delete {}	删除{}
+Open {}	打开{}
+Add {}	添加{}
+Left	左侧
+Right	右侧
+Bottom	底部
+Changes	更改
+History	历史
+Stage	暂存
+Unstage	取消暂存
+Toggle	切换
+Folder	文件夹
+Dock	停靠栏
+Tab	标签页
+Thread	会话
+Preview	预览
+Split	拆分
+Follow	跟随
+Stop	停止
+Show	显示
+Hide	隐藏
+Move	移动
+Select	选择
+Loading	正在加载
+Line	行
+Column	列
+Branch	分支
+Commit	提交
+Workspace	工作区
+Panel	面板
+Editor	编辑器
+Replace	替换
+Close Left Dock	关闭左侧停靠栏
+Close Right Dock	关闭右侧停靠栏
+Close Bottom Dock	关闭底部停靠栏
+Dock Left	停靠到左侧
+Dock Right	停靠到右侧
+Dock Bottom	停靠到底部
+Toggle Changes Tab	切换「更改」标签页
+Toggle History Tab	切换「历史」标签页
+Stage Folder	暂存文件夹
+Unstage Folder	取消暂存文件夹
+New File Thread	新建文件会话
+Add Folder	添加文件夹
+A worktree with this name already exists	已存在同名工作树
+Add Folders to this Project	添加文件夹到此项目
+Add Nickname to Server	为服务器添加昵称
+Add WSL Distro	添加 WSL 发行版
+Add a nickname for this server	为此服务器添加昵称
+Also search files ignored by configuration	同时搜索被配置忽略的文件
+As a multi-root folder	作为多根文件夹
+Automate Worktree Setup	自动化工作树设置
+Close Search Bar	关闭搜索栏
+Collapse All Files	折叠全部文件
+Collapse All Search Results	折叠全部搜索结果
+Connect Dev Container	连接开发容器
+Connect SSH Server	连接 SSH 服务器
+Create new file	新建文件
+Current Folders	当前文件夹
+Delete Remote Project	删除远程项目
+Delete Worktree	删除工作树
+Dev Containers	开发容器
+Don't Save	不保存
+Don't Show Again	不再显示
+Drop Stash	丢弃贮藏
+Edit Nickname	编辑昵称
+Enter WSL distro name	输入 WSL 发行版名称
+Execute a command...	执行命令…
+Expand All Files	展开全部文件
+Expand All Search Results	展开全部搜索结果
+Force Delete	强制删除
+Force Delete Worktree	强制删除工作树
+Hit enter to search. For more options:	按回车搜索。更多选项：
+Loading models…	正在加载模型…
+Loading project…	正在加载项目…
+Match Case Sensitivity	区分大小写
+Match Whole Words	全词匹配
+No active repository	没有活跃仓库
+No matches	无匹配结果
+No matching remote projects.	没有匹配的远程项目。
+No more matches	没有更多匹配
+No results to preview	没有可预览的结果
+No stashes found	未找到贮藏
+One Match Per Line	每行一个匹配
+Only Search Open Files	仅搜索已打开的文件
+Open Folder	打开文件夹
+Open Multiple	打开多个
+Open Project in This Window	在此窗口中打开项目
+Open as Tab	作为标签页打开
+Pop Stash	弹出贮藏
+Preview Below	在下方预览
+Preview to the Right	在右侧预览
+Project Scan in Progress…	正在扫描项目…
+Project search buffer contains unsaved edits. Do you want to save it?	项目搜索缓冲区有未保存的修改。是否保存？
+Recently opened projects will show up here	最近打开的项目会显示在这里
+Remove Folder from Project	从项目中移除文件夹
+Remove Project from Window	从窗口中移除项目
+Remove Worktree from Window	从窗口中移除工作树
+Remove from Command History	从命令历史中移除
+Remove from Recent Projects	从最近项目中移除
+Replace All Matches	替换全部匹配
+Replace Next Match	替换下一个匹配
+Replace in project…	在项目中替换…
+Replace with…	替换为…
+Requires a Git repository in the project	需要项目中有 Git 仓库
+Search All Files	搜索所有文件
+Search Backwards	向后搜索
+Search MCP tools…	搜索 MCP 工具…
+Search built-in tools…	搜索内置工具…
+Search fonts…	搜索字体…
+Search icon themes…	搜索图标主题…
+Search models…	搜索模型…
+Search project symbols...	搜索项目符号…
+Search projects…	搜索项目…
+Search remote projects…	搜索远程项目…
+Search theme…	搜索主题…
+Select All Matches	选中全部匹配
+Select Dev Container Configuration	选择开发容器配置
+Select Next Match	选中下一个匹配
+Select Previous Match	选中上一个匹配
+Select a base keymap...	选择基础快捷键方案…
+Select a model…	选择模型…
+Select a stash…	选择贮藏…
+Select or type to create a worktree…	选择或输入以创建工作树…
+Start typing to search. For more options:	输入以搜索。更多选项：
+Toggle Branch Picker	切换分支选择器
+Toggle Filters	切换筛选器
+Toggle Multi Select	切换多选
+Toggle Replace	切换替换
+Toggle Search Selection	切换搜索选中内容
+Toggle Stash Picker	切换贮藏选择器
+Use Regular Expressions	使用正则表达式
+View Server Options	查看服务器选项
+Worktree creation is not supported in collaborative projects	协作项目不支持创建工作树
+Your connection to the remote project has been lost.	与远程项目的连接已断开。
+API Key Configured	已配置 API 密钥
+API Key Set in Environment Variable	API 密钥已通过环境变量设置
+Active Provider	当前提供商
+Add Local MCP Server	添加本地 MCP 服务器
+Add Remote MCP Server	添加远程 MCP 服务器
+Add an absolute path (e.g. /path/to/directory)…	添加绝对路径（例如 /path/to/directory）…
+Add regex pattern…	添加正则表达式…
+Add skill content…	添加技能内容…
+Advanced Settings	高级设置
+Agent Configuration	智能体配置
+Agent Name	智能体名称
+Agent Panel Font	智能体面板字体
+Agent name is required.	智能体名称为必填项。
+Allow All Domains	允许所有域名
+Allow All File System Writes	允许所有文件系统写入
+Allowed Domains	允许的域名
+Always Allow	始终允许
+Always Confirm	始终确认
+Always Deny	始终拒绝
+Auto Save	自动保存
+Behavior Settings	行为设置
+Body is required.	正文为必填项。
+Branch Picker	分支选择器
+Buffer Font	缓冲区字体
+Change Scope	更改范围
+Collaboration Panel	协作面板
+Command Palette	命令面板
+Command is required.	命令为必填项。
+Configure Agent	配置智能体
+Configure External Agent	配置外部智能体
+Configure natively-included model providers.	配置内置的模型提供商。
+Contact your organization admins to adjust this setting.	请联系组织管理员调整此设置。
+Copy Share Link	复制分享链接
+Customize keybindings in the keymap editor.	在快捷键编辑器中自定义快捷键绑定。
+Delete Pattern	删除规则
+Delete Skill	删除技能
+Disable model invocation	禁用模型调用
+Display Settings	显示设置
+Drag And Drop Selection	拖放选择
+Enable Sandbox	启用沙箱
+Enter to Confirm	按回车确认
+Environment variables provided to the agent process.	提供给智能体进程的环境变量。
+Environment variables provided to the server process.	提供给服务器进程的环境变量。
+Escalation Prompts	升级权限提示
+Fetching and parsing…	正在获取并解析…
+File Diff	文件差异
+File Finder	文件查找器
+File Scan	文件扫描
+File System	文件系统
+File Types	文件类型
+File exists	文件已存在
+Focus Content	聚焦内容区
+Focus Navbar	聚焦导航栏
+General Settings	通用设置
+Git Blame View	Git 追溯视图
+Git Gutter	Git 边栏标记
+Git Hunks	Git 代码块
+Git Integration	Git 集成
+GitHub response was not valid UTF-8	GitHub 响应不是合法的 UTF-8
+HTTP headers sent with each request to the server.	每次请求服务器时发送的 HTTP 头。
+How long to wait for the server to respond before timing out.	服务器响应超时前等待的时长。
+Indent Guides	缩进参考线
+Inlay Hints	内联提示
+Inline Git Blame	内联 Git 追溯
+LSP Completions	LSP 补全
+LSP Highlights	LSP 高亮
+LSP Pull Diagnostics	LSP 拉取式诊断
+Layout Settings	布局设置
+Markdown Preview Font	Markdown 预览字体
+Max Completion Tokens	最大补全 token 数
+Maximum completion tokens for OpenAI-compatible requests.	OpenAI 兼容请求的最大补全 token 数。
+Mermaid Font	Mermaid 字体
+Modal Editing	模态编辑
+Model Name	模型名称
+No global skills installed.	未安装全局技能。
+No project skills found.	未找到项目技能。
+No provider set	未设置提供商
+Number Field	数字输入框
+OAuth Client ID	OAuth 客户端 ID
+OpenAI Compatible API	OpenAI 兼容 API
+Optional OAuth client ID	可选的 OAuth 客户端 ID
+Optional OAuth client ID used to authenticate with the server.	用于向服务器认证的可选 OAuth 客户端 ID。
+Overridden by Organization	已被组织覆盖
+Pane Modifiers	窗格修饰键
+Pane Split Direction	窗格拆分方向
+Patterns are matched against the directory path being created.	规则匹配所创建目录的路径。
+Patterns are matched against the file path being edited.	规则匹配所编辑文件的路径。
+Patterns are matched against the file path being written.	规则匹配所写入文件的路径。
+Patterns are matched against the path being deleted.	规则匹配所删除的路径。
+Patterns are matched against the search query.	规则匹配搜索关键词。
+Preserves thinking in chat history	在聊天记录中保留思考过程
+Preview Tabs	预览标签页
+Provider Name	提供商名称
+Provider Name is already taken by another provider	提供商名称已被其他提供商占用
+Provider was not registered	提供商未注册
+Remove Custom Agent	移除自定义智能体
+Remove Domain	移除域名
+Remove Model	移除模型
+Remove Path	移除路径
+Remove Registry Agent	移除注册表智能体
+Reset Key	重置密钥
+Reset to Default	重置为默认值
+Save Skill	保存技能
+Scoped Settings	限定范围设置
+Search Settings	搜索设置
+Server Name	服务器名称
+Server name is required.	服务器名称为必填项。
+Settings Content	设置内容
+Settings File	设置文件
+Settings Navigation	设置导航
+Settings update was canceled	设置更新已取消
+Signature Help	签名帮助
+Space-separated arguments passed to the command.	传递给命令的、以空格分隔的参数。
+Status Bar	状态栏
+Stored in the system keychain, not in settings.json.	存储在系统钥匙串中，而非 settings.json。
+Supports images	支持图片
+Supports parallel_tool_calls	支持 parallel_tool_calls
+Supports prompt_cache_key	支持 prompt_cache_key
+Supports thinking	支持思考
+Supports tools	支持工具
+System Default	系统默认
+Tab Bar	标签栏
+Tab Settings	标签页设置
+Text Rendering	文本渲染
+The maximum number of tokens the model can output.	模型可输出的最大 token 数。
+The model context window size.	模型上下文窗口大小。
+The model's name in the provider's API.	模型在提供商 API 中的名称。
+They can be automatically migrated to the latest version.	它们可以自动迁移到最新版本。
+Title Bar	标题栏
+UI Font	界面字体
+Uninstall MCP Server	卸载 MCP 服务器
+Uses max_tokens for output limit	使用 max_tokens 作为输出上限
+View Other Projects	查看其他项目
+Warn About Confusable Unicode	对易混淆的 Unicode 字符发出警告
+Warn About Windows-Drive Grants	对授予 Windows 驱动器权限发出警告
+Which-key Menu	按键提示菜单
+Workspace Restoration	工作区恢复
+Writable Paths	可写路径
+Your settings are out of date, and need to be updated.	你的设置已过时，需要更新。
+Accent text color	强调文字颜色
+Animate In	淡入
+Authentication Required.	需要身份验证。
+Be aware of your subscription!	请注意你的订阅！
+Checking for Zed Updates…	正在检查 Zed 更新…
+Client Secret Required.	需要客户端密钥。
+Control Pictures	控制字符图示
+Ctrl-K Ctrl-S	Ctrl-K Ctrl-S
+Default text color	默认文字颜色
+Disabled text color	禁用态文字颜色
+Downloading Zed Update…	正在下载 Zed 更新…
+Editor Surface	编辑器表面
+Elevated Surface	悬浮表面
+Fade and Animate In	淡入并动画
+From Bottom	从底部
+From Left	从左侧
+From Right	从右侧
+From Top	从顶部
+Info status	信息状态
+Installing Zed Update…	正在安装 Zed 更新…
+Large Headline	大标题
+Medium Headline	中标题
+Modal Surface	模态对话框表面
+Muted text color	弱化文字颜色
+No items	没有项目
+Restart to Update	重启以更新
+Reveal in File Explorer	在文件资源管理器中显示
+Reveal in File Manager	在文件管理器中显示
+Reveal in Finder	在访达中显示
+Server is active.	服务器已启动。
+Server is starting.	服务器正在启动。
+Server is stopped.	服务器已停止。
+Small Headline	小标题
+Success status	成功状态
+Text Colors	文字颜色
+This feature adds new functionality to the app.	此功能为应用新增能力。
+This is a success message	这是一条成功提示
+Try Now	立即试用
+Up to Date	已是最新
+Version Control Colors	版本控制颜色
+Waiting for Authorization…	正在等待授权…
+Warning status	警告状态
+XLarge Headline	超大标题
+XSmall Headline	超小标题
+Your subscription is about to expire. Renew now!	你的订阅即将到期，请立即续订！
+Empty Workspace	空工作区
+Expand Emmet abbreviation	展开 Emmet 缩写
+Expand macro	展开宏
+External formatter does not support range formatting; skipping	外部格式化程序不支持范围格式化，已跳过
+Falling back to full format - LSP does not support range formatting	回退为整体格式化——LSP 不支持范围格式化
+Find all references	查找所有引用
+Finding references...	正在查找引用...
+Formatter set to auto: defaulting to prettier	格式化程序设为自动：默认使用 prettier
+Formatter set to auto: defaulting to primary language server	格式化程序设为自动：默认使用主语言服务器
+Formatting buffer using code actions	正在使用代码操作格式化缓冲区
+Formatting buffer using language server	正在使用语言服务器格式化缓冲区
+Formatting buffer via external command	正在通过外部命令格式化缓冲区
+Formatting buffer via prettier	正在通过 prettier 格式化缓冲区
+Formatting locally	正在本地格式化
+Formatting on typing	输入时格式化
+Formatting remotely	正在远程格式化
+Formatting via LSP	正在通过 LSP 格式化
+Get completion	获取补全
+Get declaration	获取声明
+Get definition	获取定义
+Get diagnostics	获取诊断
+Get document highlights	获取文档高亮
+Get document symbols	获取文档符号
+Get hover	获取悬停信息
+Get implementation	获取实现
+Get incoming calls	获取传入调用
+Get outgoing calls	获取传出调用
+Get signature help	获取签名帮助
+Get type definition	获取类型定义
+Git Clone isn't supported for project guests	项目访客不支持 Git 克隆
+Git Config isn't support for project guests	项目访客不支持 Git 配置
+Git Config isn't yet supported for remote projects	远程项目尚不支持 Git 配置
+Go to parent module	跳转到父模块
+Linked editing range	关联编辑范围
+LSP Runnables	LSP 可运行项
+No changes within selection	选中范围内没有更改
+Open docs	打开文档
+Prepare call hierarchy	准备调用层级
+Prepare rename	准备重命名
+Reloading images from remote is not supported	不支持从远程重新加载图片
+Switch source header	切换到源文件头
+This project does not support toolchains	此项目不支持工具链
+Application menu	应用菜单
+Audio will be unmuted	音频将被取消静音
+Close Announcement Banner	关闭公告横幅
+Dev Container	开发容器
+Git Onboarding	Git 上手指引
+It won't show again for this feature	此功能不再显示该提示
+Mark this project as trusted and unlock all features	将此项目标记为受信任，解锁全部功能
+Microphone Disabled	麦克风已禁用
+Microphone Enabled	麦克风已启用
+Microphone will be muted	麦克风将被静音
+Microphone will be unmuted	麦克风将被取消静音
+Mute Audio	静音音频
+Mute Microphone	静音麦克风
+Panel Layout	面板布局
+Please restart Zed to Collaborate	请重启 Zed 以使用协作
+Please update Zed to Collaborate	请更新 Zed 以使用协作
+Remote Project	远程项目
+Share Project	共享项目
+Share Screen	共享屏幕
+Share active project with call participants	与通话参与者共享当前项目
+Skills have replaced Rules	技能（Skills）已取代规则（Rules）
+Stop Sharing Screen	停止共享屏幕
+Stop sharing project with call participants	停止与通话参与者共享项目
+Unknown screen	未知屏幕
+Unmute Audio	取消静音音频
+Unmute Microphone	取消静音麦克风
+Unshare Project	取消共享项目
+User menu	用户菜单
+You're in Restricted Mode	你正处于受限模式
+Action Arguments	操作参数
+Action name is required	操作名称不能为空
+Auto-complete will not work	自动补全将不可用
+Copy Context	复制上下文
+Could not save updated keybinding	无法保存更新后的快捷键
+Edit Keybinding	编辑快捷键
+Edit this binding	编辑此快捷键
+Filter action names…	筛选操作名称…
+Keybinding Context	快捷键上下文
+Keymap Editor	快捷键编辑器
+No Action	无操作
+No conflicting keybinds found	未发现冲突的快捷键
+No conflicting keybinds found that match the provided query	未发现与查询匹配的冲突快捷键
+No keybinds found matching the entered keystrokes	未找到与所输入按键匹配的快捷键
+No matches found for the provided query	未找到与查询匹配的结果
+Search by Keystrokes	按按键搜索
+Show Matching Keybindings	显示匹配的快捷键
+Show matching keybinds	显示匹配的快捷键
+This action is unbound	此操作未绑定快捷键
+This binding is overridden by other bindings.	此绑定已被其他绑定覆盖。
+This binding is overridden.	此绑定已被覆盖。
+Toggle Exact Match Mode	切换精确匹配模式
+Type an action name	输入操作名称
+View conflicts	查看冲突
+Coming from Neovim? Use our first-class implementation of Vim Mode	从 Neovim 转过来？试试我们一流的 Vim 模式实现
+Default Themes	默认主题
+Dismiss Hint	关闭提示
+Theme Preview Tile	主题预览卡片
+Copied into clipboard	已复制到剪贴板
+No extensions installed.	未安装任何扩展。
+Couldn't load release notes	无法加载发行说明
+Introducing Delta	隆重推出 Delta
+Made by the Zed team, with the same quality and performance	由 Zed 团队打造，品质与性能一脉相承
+Try Delta	试用 Delta
+View Release Notes	查看发行说明
+View in Browser	在浏览器中查看
+Work with teammates and agents in the same thread, live or later	与队友和智能体在同一会话中协作，实时或异步均可
+Agent server not found	未找到智能体服务器
+Authentication method is not supported for agent-managed login	由智能体管理的登录不支持此认证方式
+Loading sessions is not supported by this agent.	此智能体不支持加载会话。
+Login with your Google or Vertex AI account	使用你的 Google 或 Vertex AI 账号登录
+Logout is not supported by this agent.	此智能体不支持退出登录。
+Resuming sessions is not supported by this agent.	此智能体不支持恢复会话。
+The user aborted a request	用户中止了请求
+This operation was aborted	此操作已被中止
+Clear Messages	清空消息
+Copy All Messages	复制全部消息
+No active connection	没有活动连接
+No connection selected	未选择连接
+No messages recorded yet	尚无记录的消息
+Restart Connection	重启连接
+Call Ended	通话已结束
+Channel Joined	已加入频道
+Incoming Call Accepted	已接听来电
+Participant Invited	已邀请参与者
+Project Shared	项目已共享
+Project Unshared	项目已取消共享
+Fetching call hierarchy…	正在获取调用层级…
+No callable symbol under the cursor	光标处没有可调用的符号
+No incoming calls found	未找到传入调用
+No outgoing calls found	未找到传出调用
+Search incoming calls...	搜索传入调用...
+Search outgoing calls...	搜索传出调用...
+Show Callees	显示被调用方
+Show Callers	显示调用方
+Buffer Search	缓冲区搜索
+Copy Diagnostic	复制诊断信息
+Exclude Warnings	排除警告
+Expand Diagnostics	展开诊断
+Next Diagnostic	下一个诊断
+Project Diagnostics	项目诊断
+Project diagnostics: no problems	项目诊断：没有问题
+Refresh Diagnostics	刷新诊断
+Stop Diagnostics Update	停止更新诊断
+Reopen with Encoding	以指定编码重新打开
+Reopen with encoding...	以指定编码重新打开...
+Save file to change encoding	保存文件以更改编码
+Install Emmet	安装 Emmet
+Download complete	下载完成
+No connection arguments provided	未提供连接参数
+Timed out when connecting to debugger	连接调试器超时
+Adapter Logs	适配器日志
+DAP Logs	DAP 日志
+Initialization Sequence	初始化序列
+No adapter selected	未选择适配器
+RPC Messages	RPC 消息
+Add code block	添加代码块
+Add markdown block	添加 Markdown 块
+Clear all outputs	清空所有输出
+Close output area	关闭输出区域
+Copy Output	复制输出
+Delete cell	删除单元格
+Execute all cells	执行所有单元格
+Interrupt Kernel	中断内核
+Jupyter Kernel Sessions	Jupyter 内核会话
+Jupyter Kernels	Jupyter 内核
+Jupyter Server	Jupyter 服务器
+More options	更多选项
+Move cell down	下移单元格
+Move cell up	上移单元格
+No Jupyter Kernel Sessions	没有 Jupyter 内核会话
+No Jupyter Kernels Available	没有可用的 Jupyter 内核
+No kernel specs found	未找到内核配置
+No project associated with editor	编辑器未关联任何项目
+Open in Buffer	在缓冲区中打开
+Python Environment	Python 环境
+Python Environments	Python 环境
+REPL Output	REPL 输出
+REPL Sessions	REPL 会话
+Remote Servers	远程服务器
+SSH Remote	SSH 远程
+Select Kernel	选择内核
+Select a kernel...	选择内核...
+Shutting Down	正在关闭
+Type here and press Enter	在此输入并按回车
+WSL Kernels	WSL 内核
+WSL Remote	WSL 远程
+Allows inspection of memory contents	允许查看内存内容
+Attach the debugger to a running process	将调试器附加到正在运行的进程
+Change Address of Currently Viewed Memory	更改当前查看的内存地址
+Debug terminal	调试终端
+Disable Breakpoint	禁用断点
+Disable Data Breakpoint	禁用数据断点
+Disable Exception Breakpoint	禁用异常断点
+Disable a breakpoint without removing it from the list	禁用断点但保留在列表中
+Displays program output and allows manual input of debugger commands	显示程序输出，并允许手动输入调试器命令
+Displays the call stack, letting you navigate between function calls	显示调用栈，便于在函数调用之间跳转
+Edit Memory at a Selected Address	编辑指定地址处的内存
+Enable Breakpoint	启用断点
+Enable Data Breakpoint	启用数据断点
+Enable Exception Breakpoint	启用异常断点
+Evaluate an expression	求值一个表达式
+Find a debug task, or debug a command	查找调试任务，或调试某条命令
+Go To Selected Address	跳转到所选地址
+Go to Memory Address / Expression	跳转到内存地址 / 表达式
+Launch a new process with a debugger	用调试器启动新进程
+Lists all active breakpoints set in the code	列出代码中设置的所有活动断点
+Lists all source files currently loaded and used by the debugger	列出调试器当前加载和使用的所有源文件
+Memory View	内存视图
+Re-enable a breakpoint	重新启用断点
+Remove Breakpoint	移除断点
+Remove breakpoint from a breakpoint list	从断点列表中移除断点
+Remove data breakpoint from a breakpoint list	从断点列表中移除数据断点
+Run predefined task	运行预定义任务
+Select Debugger	选择调试器
+Select a Debug Session	选择调试会话
+Select the process you want to attach the debugger to	选择要附加调试器的进程
+Set Condition	设置条件
+Set Data Breakpoint	设置数据断点
+Set Hit Condition	设置命中条件
+Set Log Message	设置日志消息
+Shows all modules or libraries loaded by the program	显示程序加载的所有模块或库
+Start a predefined debug scenario	启动预定义的调试场景
+Unknown Session	未知会话
+Write to Selected Memory Range	写入所选内存区域
+API key configured	API 密钥已配置
+Bedrock Console	Bedrock 控制台
+Bedrock Model Catalog	Bedrock 模型目录
+Bedrock does not support custom tools	Bedrock 不支持自定义工具
+Bedrock request was throttled	Bedrock 请求被限流
+Bedrock service is temporarily unavailable	Bedrock 服务暂时不可用
+Click 'Connect' below to start using Ollama in Zed	点击下方的“连接”即可在 Zed 中使用 Ollama
+Click 'Connect' below to start using llama.cpp in Zed	点击下方的“连接”即可在 Zed 中使用 llama.cpp
+Configure ChatGPT	配置 ChatGPT
+Configure Copilot Chat	配置 Copilot Chat
+DeepSeek does not support custom tool calls	DeepSeek 不支持自定义工具调用
+DeepSeek does not support custom tools	DeepSeek 不支持自定义工具
+Enter either access keys OR a Bedrock API Key below (not both)	请在下方填写访问密钥或 Bedrock API 密钥（二选一，不要同时填写）
+IAM Console	IAM 控制台
+LM Studio does not support custom tool calls	LM Studio 不支持自定义工具调用
+LM Studio does not support custom tools	LM Studio 不支持自定义工具
+LM Studio needs to be running with at least one model downloaded.	LM Studio 需要保持运行，且至少下载了一个模型。
+Loading …	正在加载…
+Mistral does not support custom tool calls	Mistral 不支持自定义工具调用
+Mistral does not support custom tools	Mistral 不支持自定义工具
+Not authenticated	未认证
+Ollama does not support custom tool calls	Ollama 不支持自定义工具调用
+Ollama does not support custom tools	Ollama 不支持自定义工具
+OpenCode Console	OpenCode 控制台
+OpenCode model catalog request timed out	OpenCode 模型目录请求超时
+OpenCode model metadata did not contain any compatible models	OpenCode 模型元数据中没有任何兼容的模型
+OpenRouter does not support custom tool calls	OpenRouter 不支持自定义工具调用
+OpenRouter does not support custom tools	OpenRouter 不支持自定义工具
+Paste your API key below and hit enter to start using OpenCode	在下方粘贴你的 API 密钥并按回车，即可开始使用 OpenCode
+Refresh Models	刷新模型
+Requires an active GitHub Copilot subscription.	需要有效的 GitHub Copilot 订阅。
+Run local LLMs like Llama, Phi, and Qwen with LM Studio.	使用 LM Studio 运行 Llama、Phi、Qwen 等本地大模型。
+Run local models on your machine with LlamaCpp.	使用 LlamaCpp 在本机运行本地模型。
+Run local models on your machine with Ollama.	使用 Ollama 在本机运行本地模型。
+See the attached image output.	请查看所附图片的输出。
+Signed in	已登录
+Subscribe for access to Zed's hosted models.	订阅即可使用 Zed 托管的模型。
+Subscribed to Business	已订阅 Business
+Subscribed to Pro	已订阅 Pro
+Subscribed to Pro Trial	已订阅 Pro 试用版
+Subscribed to Student	已订阅学生版
+Subscribed to VIP	已订阅 VIP
+Using Bedrock API Key	使用 Bedrock API 密钥
+Using IAM credentials	使用 IAM 凭证
+Using automatic credentials (AWS default chain)	使用自动凭证（AWS 默认链）
+You have access to Zed's hosted models through your Pro subscription.	你可以通过 Pro 订阅使用 Zed 托管的模型。
+You have access to Zed's hosted models through your VIP subscription.	你可以通过 VIP 订阅使用 Zed 托管的模型。
+You have access to Zed's hosted models through your organization.	你可以通过所在组织使用 Zed 托管的模型。
+Zed's hosted models are disabled by your organization's configuration.	Zed 托管模型已被你的组织配置禁用。
+Anthropic does not support custom tool calls	Anthropic 不支持自定义工具调用
+Anthropic does not support custom tools	Anthropic 不支持自定义工具
+Anthropic ended the stream without finishing its compaction summary	Anthropic 在完成压缩摘要前结束了流
+Your credit balance is too low to access the Anthropic API.	你的额度不足，无法访问 Anthropic API。
+Add your feedback…	添加你的反馈…
+Buffer Edit	缓冲区编辑
+Changed more than expected	改动超出预期
+Choose a Plan	选择套餐
+Configure a Provider	配置服务提供方
+Cursor placed in unhelpful position	光标位置没有帮助
+Data Collection Disabled	数据收集已禁用
+Data Collection Enabled	数据收集已启用
+Diagnostic Navigation	诊断导航
+Disabled For This File	已对此文件禁用
+Edit Prediction Context	编辑预测上下文
+Edit Prediction Menu Action	编辑预测菜单操作
+Edit Prediction Status Button	编辑预测状态按钮
+Edit Prediction Status Menu	编辑预测状态菜单
+Edits Available	有可用的编辑
+Enable to Use	启用后可用
+Explain what's bad about it before reporting it	在提交报告前，请先说明它哪里不好
+Explain why this completion is good or bad.	说明这次补全好在哪里或差在哪里。
+GitHub Copilot	GitHub Copilot
+GitHub Copilot Edit Predictions	GitHub Copilot 编辑预测
+Go to Copilot Settings	前往 Copilot 设置
+Go to next run	跳到下一次运行
+Go to previous run	跳到上一次运行
+If it's negative, describe what you expected instead.	如果是负面评价，请描述你原本期望的结果。
+Ignored or misunderstood context	忽略或误解了上下文
+LSP Completion Accepted	已接受 LSP 补全
+Mercury free tier limit reached	Mercury 免费额度已用尽
+No Edits Produced	未产生任何编辑
+No active completion	没有活动的补全
+No completions yet.	暂无补全。
+No retrieval runs yet	尚无检索运行记录
+Ollama model not configured — configure a model before use	未配置 Ollama 模型——请先配置模型再使用
+Powered by Codestral	由 Codestral 提供支持
+Powered by Mercury	由 Mercury 提供支持
+Powered by Zeta	由 Zeta 提供支持
+Prediction Accepted	已接受预测
+Prediction Partially Accepted	部分接受预测
+Project identified as open source, and you're sharing data.	项目被识别为开源项目，且你正在共享数据。
+Project identified as open source, but you're not sharing data.	项目被识别为开源项目，但你未共享数据。
+Project not identified as open source, and setting turned off.	项目未被识别为开源项目，且该设置已关闭。
+Project not identified as open source. No data captured.	项目未被识别为开源项目，未采集任何数据。
+Provider Changed	服务提供方已更改
+Rated Prediction	已评价预测
+Referenced non-existent symbols	引用了不存在的符号
+Reinstall Copilot Edit Predictions	重新安装 Copilot 编辑预测
+Repeated existing code	重复了已有代码
+Settings Changed	设置已更改
+Sign In Or Configure a Provider	登录或配置服务提供方
+Suggested Edits	建议的编辑
+Too cautious, changed too little	过于保守，改动过少
+Total Time	总耗时
+Undid recent edits	撤销了最近的编辑
+Unwanted whitespace or newline changes	多余的空白或换行改动
+Use the editor to generate some,	使用编辑器生成一些，
+User Info Changed	用户信息已更改
+Vim Mode Changed	Vim 模式已更改
+Wrong coding style or conventions	代码风格或约定不正确
+Wrong indentation or structure	缩进或结构不正确
+Accept invite	接受邀请
+Active Call	进行中的通话
+Add to Favorites	添加到收藏
+Amount of data lost during transfer	传输过程中丢失的数据量
+Auto Watch Screens	自动观看屏幕
+Auto Watch Screens (paused while sharing)	自动观看屏幕（共享时暂停）
+Cancel invite	取消邀请
+Channel Invites	频道邀请
+Clear Filter	清除筛选
+Click to Follow	点击以跟随
+Collapse Subchannels	折叠子频道
+Contact Requests	联系人请求
+Copy Private Channel Link	复制私有频道链接
+Copy Public Channel Link	复制公开频道链接
+Create Channel	创建频道
+Current Call	当前通话
+Decline invite	拒绝邀请
+Delay from audio capture to WebRTC	从音频采集到 WebRTC 的延迟
+Demote to Member	降为成员
+Expand Subchannels	展开子频道
+Input lag	输入延迟
+Leave Call	离开通话
+Link copied to clipboard	链接已复制到剪贴板
+Open Channel Notes	打开频道笔记
+Open Shared Screen	打开共享屏幕
+Packet loss	丢包
+Promote to Member	提升为成员
+Remove from Favorites	从收藏中移除
+Revoke Access	撤销访问权限
+Room ID copied to clipboard	房间 ID 已复制到剪贴板
+Search channels…	搜索频道…
+Search collaborator by username...	按用户名搜索协作者...
+Search for New Contact	搜索新联系人
+Show All Channels	显示所有频道
+Show Occupied Channels	显示已占用的频道
+Sign In with GitHub	使用 GitHub 登录
+Stop Auto Watching Screens	停止自动观看屏幕
+Time for data to travel to the server	数据传送到服务器所需时间
+Variance or fluctuation in latency	延迟的波动或起伏
+Business Plan	Business 套餐
+Free Plan	免费套餐
+No credit card required	无需信用卡
+Not Signed-in	未登录
+Optional credit packs for additional usage	可选额度包，用于额外用量
+Pro Plan	Pro 套餐
+Student Plan	学生套餐
+Tokens in the Zed agent	Zed 智能体中的 token
+Unlimited edit predictions	无限次编辑预测
+Unlimited prompts with your AI API keys	使用你自己的 AI API 密钥时提示词不限量
+Usage-based billing	按用量计费
+VIP Plan	VIP 套餐
+Welcome to Zed AI	欢迎使用 Zed AI
+Welcome to Zed Business	欢迎使用 Zed Business
+Welcome to Zed Pro	欢迎使用 Zed Pro
+Welcome to Zed Student	欢迎使用 Zed 学生版
+Welcome to Zed VIP	欢迎使用 Zed VIP
+Welcome to the Zed Pro Trial	欢迎使用 Zed Pro 试用版
+Young Account	新账号
+Agent Servers	智能体服务器
+C support is built-in to Zed!	Zed 已内置 C 支持！
+Claude Agent support is built-in to Zed!	Zed 已内置 Claude Agent 支持！
+Codex CLI support is built-in to Zed!	Zed 已内置 Codex CLI 支持！
+Debug Adapters	调试适配器
+Disable Suggestions	禁用建议
+Don't show again	不再显示
+Gemini CLI support is built-in to Zed!	Zed 已内置 Gemini CLI 支持！
+Go support is built-in to Zed!	Zed 已内置 Go 支持！
+Icon Themes	图标主题
+Indexed Docs Providers	索引文档提供方
+Loading extensions…	正在加载扩展…
+No dev extensions are installed.	未安装开发扩展。
+No dev extensions found	未找到开发扩展
+No extensions that match your search.	没有与搜索匹配的扩展。
+No extensions.	没有扩展。
+No installed extensions that match your search.	没有与搜索匹配的已安装扩展。
+No installed extensions.	没有已安装的扩展。
+No not installed extensions that match your search.	没有与搜索匹配的未安装扩展。
+No not installed extensions.	没有未安装的扩展。
+Python support is built-in to Zed!	Zed 已内置 Python 支持！
+React support is built-in to Zed!	Zed 已内置 React 支持！
+Rebuild dev extension…	重新构建开发扩展…
+Rust support is built-in to Zed!	Zed 已内置 Rust 支持！
+Search extensions...	搜索扩展...
+Select extension version...	选择扩展版本...
+Shell support is built-in to Zed!	Zed 已内置 Shell 支持！
+Slash Commands	斜杠命令
+Tailwind CSS support is built-in to Zed!	Zed 已内置 Tailwind CSS 支持！
+Typescript support is built-in to Zed!	Zed 已内置 TypeScript 支持！
+Vim support is built-in to Zed!	Zed 已内置 Vim 支持！
+Visit Extension Repository	访问扩展仓库
+Zed supports linking to a source line on GitHub and others.	Zed 支持链接到 GitHub 等平台的源代码行。
+Connect to GitHub	连接到 GitHub
+Copilot Chat	Copilot Chat
+Copilot Chat Enabled!	Copilot Chat 已启用！
+Copilot Chat had an issue signing in. Please try again.	Copilot Chat 登录时出现问题，请重试。
+Copilot Edit Predictions	Copilot 编辑预测
+Copilot Edit Predictions Enabled!	Copilot 编辑预测已启用！
+Copilot Edit Predictions has started.	Copilot 编辑预测已启动。
+Copilot Edit Predictions is reinstalling…	正在重新安装 Copilot 编辑预测…
+Copilot Edit Predictions is starting…	正在启动 Copilot 编辑预测…
+Reinstall Copilot Edit Predictions and Sign In	重新安装 Copilot 编辑预测并登录
+Reinstall Copilot and Sign in	重新安装 Copilot 并登录
+Reinstall and Sign in	重新安装并登录
+Sign in to GitHub	登录 GitHub
+Signed out of Copilot Edit Predictions	已退出 Copilot 编辑预测
+Signing out of Copilot Edit Predictions…	正在退出 Copilot 编辑预测…
+Use GitHub Copilot Chat in Zed	在 Zed 中使用 GitHub Copilot Chat
+Use GitHub Copilot Edit Predictions in Zed	在 Zed 中使用 GitHub Copilot 编辑预测
+Use GitHub Copilot in Zed	在 Zed 中使用 GitHub Copilot
+Waiting for connection…	正在等待连接…
+Copilot Chat does not support custom tool calls	Copilot Chat 不支持自定义工具调用
+Copilot Chat does not support custom tools	Copilot Chat 不支持自定义工具
+Copilot did not provide an output limit for this model	Copilot 未为此模型提供输出上限
+Copilot sign-in was cancelled.	Copilot 登录已取消。
+Extra High	超高
+GitHub Copilot Chat	GitHub Copilot Chat
+The Copilot sign-in code expired. Please try again.	Copilot 登录码已过期，请重试。
+All Servers Operational	所有服务器运行正常
+Highlights Settings	高亮设置
+Restart All Servers	重启所有服务器
+Server with errors	有错误的服务器
+Server with notifications	有通知的服务器
+Server with warnings	有警告的服务器
+Stop All Servers	停止所有服务器
+Syntax Tokens	语法 token
+Syntax Tree	语法树
+Text Highlights	文本高亮
+Try assigning a language or	尝试指定一种语言，
+Unknown worktree	未知工作树
+Are you sure you want to permanently delete	确定要永久删除吗
+Disconnected from SSH host	已断开与 SSH 主机的连接
+Disconnected from remote project	已断开与远程项目的连接
+Do you want to replace it?	要替换它吗？
+Do you want to trash	你要把以下内容移到回收站吗
+File is too large to load	文件过大，无法加载
+File or directory name contains leading or trailing whitespace.	文件或目录名包含开头或结尾的空格。
+Symbolic Link	符号链接
+Try Again	重试
+Hide Symbols	隐藏符号
+No matches for query	没有与查询匹配的结果
+No outlines available	没有可用的大纲
+Pin Active Outline	固定当前大纲
+Search buffer symbols…	搜索缓冲区符号…
+Show Symbols	显示符号
+Unpin Outline	取消固定大纲
+Filter declarations…	筛选声明…
+Filter definitions…	筛选定义…
+Filter implementations…	筛选实现…
+Filter references…	筛选引用…
+Filter type definitions…	筛选类型定义…
+No declarations found	未找到声明
+No definitions found	未找到定义
+No implementations found	未找到实现
+No references found	未找到引用
+No type definitions found	未找到类型定义
+Choose how filter values are sorted in the filter menu	设置筛选菜单中筛选值的排序方式
+Choose vertical text alignment within cells	设置单元格内文本的垂直对齐方式
+Column has active filters. Click to manage	该列有启用的筛选条件。点击管理
+Display multiline rows	显示多行行高
+Right click to copy column name	右键复制列名
+Right click to copy content	右键复制内容
+Show cell positions	显示单元格坐标
+Show perf metrics	显示性能指标
+Table Settings	表格设置
+Tabular Data Preview	表格数据预览
+Uniform Height	等高
+Variable Height	可变行高
+No data to display	没有可显示的数据
+No filters applied. Click to add filters	未应用筛选。点击添加筛选
+Not sorted. Click to sort A-Z	未排序。点击按 A-Z 排序
+Sorted A-Z. Click to sort Z-A	已按 A-Z 排序。点击按 Z-A 排序
+Sorted Z-A. Click to disable sorting	已按 Z-A 排序。点击取消排序
+Performance metrics:	性能指标：
+Hidden by other filters	被其他筛选条件隐藏
+Preview requires a single file	预览仅支持单个文件
+Auto-updates disabled for non-bundled app.	非打包版应用已禁用自动更新。
+Could not check for updates	无法检查更新
+Downloading remote server	正在下载远程服务器
+Fetching remote server release	正在获取远程服务器发行版
+Please install rsync using your package manager	请使用你的包管理器安装 rsync
+Zed was installed via a package manager.	Zed 是通过包管理器安装的。
+Adding llvm-tools for cross-compilation	正在添加 llvm-tools 以进行交叉编译
+Adding rustup target for cross-compilation	正在添加 rustup target 以进行交叉编译
+Attempted reconnect, but server not running.	已尝试重新连接，但服务器未运行。
+Building remote server binary from source	正在从源码构建远程服务器二进制文件
+Compressing binary	正在压缩二进制文件
+Connection to ... closed.	与 ... 的连接已关闭。
+Downloading remote development server on host	正在主机上下载远程开发服务器
+Extracting remote development server	正在解压远程开发服务器
+Extracting remote server	正在解压远程服务器
+Installing cargo-zigbuild for cross-compilation	正在安装 cargo-zigbuild 以进行交叉编译
+Neither curl nor wget is available	curl 和 wget 均不可用
+Remote binary path not set	未设置远程二进制文件路径
+Remote command exceeds 16 MiB	远程命令超过 16 MiB
+SSH connection canceled	SSH 连接已取消
+Starting proxy	正在启动代理
+Streaming remote server into WSL	正在将远程服务器流式传输到 WSL
+Uploading remote development server	正在上传远程开发服务器
+Uploading remote server	正在上传远程服务器
+WSL shares a network interface with the host	WSL 与主机共用网络接口
+WSL shares the network interface with the host system	WSL 与主机系统共用网络接口
+Waiting for existing connection attempt	正在等待现有的连接尝试
+All files	所有文件
+Layout Text	排版文本
+Recent Folders	最近使用的文件夹
+Unknown Driver	未知驱动
+Accessibility Tree	无障碍树
+Are you sure you want to quit?	确定要退出吗？
+Clear Events	清空事件
+Column Git Blame	按列显示 Git 追责
+Debug Filesystem Watching	调试文件系统监听
+Default Key Bindings	默认按键绑定
+Default Settings	默认设置
+Diff Against Default Branch	与默认分支比较
+Don't ask me again	不再询问
+Filter events...	筛选事件...
+Go to Symbol in Project	跳转到项目中的符号
+Inline Values	内联值
+Line Numbers	行号
+Live native and polling watch roots across the app.	应用中所有原生与轮询监听的根目录。
+Move Zed to Applications?	要将 Zed 移到“应用程序”文件夹吗？
+No Code Actions Available	没有可用的代码操作
+No events match the current filter	没有与当前筛选条件匹配的事件
+No local projects are open.	没有打开任何本地项目。
+No telemetry events recorded yet	尚未记录遥测事件
+No watch roots.	没有监听根目录。
+Not an ssh project	不是 SSH 项目
+Nothing running	没有正在运行的进程
+Open Raw Log File	打开原始日志文件
+Open Source License Attribution	开源许可证声明
+Preview Markdown	预览 Markdown
+Preview SVG	预览 SVG
+Preview Tabular Data	预览表格数据
+REPL Menu	REPL 菜单
+Raw Events	原始事件
+Run Line	运行当前行
+Run Selection	运行选中内容
+Scan Exclusions	扫描排除项
+Selection Controls	选区控件
+Selection Menu	选区菜单
+Semantic Highlights	语义高亮
+Set up new worktree	设置新的工作树
+Telemetry Log	遥测日志
+The GPU Zed is running on	Zed 正在使用的 GPU
+This project has no folders open.	此项目没有打开任何文件夹。
+Troubleshoot and Quit	排查问题并退出
+Waiting for filesystem watcher events…	正在等待文件系统监听事件…
+Watch Roots	监听根目录
+Editor Controls	编辑器控件
+Open external browser to launch the application	打开外部浏览器来启动应用
+A list of minimatch patterns for source map resolution	用于 source map 解析的 minimatch 模式列表
+A list of source languages to enable language-specific features for	需要启用语言专属特性的源语言列表
+Absolute path to a file containing environment variable definitions.	包含环境变量定义的文件绝对路径。
+Absolute path to the program.	程序的绝对路径。
+Absolute path to the working directory of the program being debugged	被调试程序工作目录的绝对路径
+Additional environment variables	额外的环境变量
+An array of glob patterns for files to skip when debugging	调试时要跳过的文件的 glob 模式数组
+Arguments passed to the runtime executable	传给运行时可执行文件的参数
+Attach by connecting to debugpy over a socket.	通过 socket 连接 debugpy 进行附加。
+Attach by listening for incoming socket connection from debugpy	监听来自 debugpy 的传入 socket 连接进行附加
+Automatically reload code on edit.	编辑代码后自动重新加载。
+Automatically stop after launch.	启动后自动停止。
+Automatically stop debuggee after launch	启动后自动停止被调试程序
+Automatically stop program after launch	启动后自动停止程序
+Automatically stop program after launch or attach.	启动或附加后自动停止程序。
+Command line arguments for the program.	程序的命令行参数。
+Command line arguments passed to the program	传给程序的命令行参数
+Commands executed at the end of debugging session	调试会话结束时执行的命令
+Commands executed just after the program has been launched	程序启动后立即执行的命令
+Commands executed just before the program is launched	程序启动前立即执行的命令
+Commands that create the debug target	创建调试目标的命令
+Commands that create the debuggee process	创建被调试进程的命令
+Configures automatic reload of code on edit.	配置编辑后自动重新加载代码。
+Could not find a Python installation	未找到 Python 安装
+Could not find gdb in path	在 PATH 中未找到 gdb
+Could not find gdb path or it's not installed	未找到 gdb 路径，或未安装
+Debug adapter request type	调试适配器请求类型
+Debug logging level.	调试日志级别。
+Debug mode for launch configuration.	启动配置的调试模式。
+Debug port to attach to	要附加的调试端口
+Debug with elevated permissions (on Unix).	以提权方式调试（Unix 上）。
+Directory for record trace (for 'replay' mode).	录制 trace 的目录（用于 'replay' 模式）。
+Display name of the debug console or terminal	调试控制台或终端的显示名称
+Django debugging.	Django 调试。
+Enable debugging of gevent monkey-patched code.	启用对 gevent monkey-patch 后代码的调试。
+Enable reverse debugging	启用反向调试
+Enables logging of the Debug Adapter	启用调试适配器的日志
+Environment variables for the debugged program.	被调试程序的环境变量。
+Environment variables passed to the program	传给程序的环境变量
+File to read the environment variables from	读取环境变量的文件
+Flags for the Go compiler.	Go 编译器的标志。
+Glob patterns for locating generated JavaScript files	用于定位生成的 JavaScript 文件的 glob 模式
+Glob patterns of paths to exclude from auto reload.	自动重新加载时要排除的路径 glob 模式。
+Glob patterns of paths to include in auto reload.	自动重新加载时要包含的路径 glob 模式。
+Hide system goroutines from call stack view.	在调用栈视图中隐藏系统 goroutine。
+Hostname or IP address of the interface to listen on.	要监听的主机名或 IP 地址。
+Hostname or IP address to connect to.	要连接的主机名或 IP 地址。
+ID of process to attach to (Node.js debugging)	要附加的进程 ID（Node.js 调试）
+ID of the local process to attach to.	要附加的本地进程 ID。
+Initialization commands executed upon debugger startup	调试器启动时执行的初始化命令
+Jinja template debugging (e.g. Flask).	Jinja 模板调试（例如 Flask）。
+Local or remote debugging.	本地或远程调试。
+Local source root.	本地源码根目录。
+Log destination for delve.	delve 的日志输出目标。
+Mappings from local to remote paths for debugging.	调试用的本地到远程路径映射。
+Maximum depth of stack traces.	堆栈跟踪的最大深度。
+Name of the module to be debugged.	要调试的模块名称。
+OS that VS code is using.	VS Code 使用的操作系统。
+Output path for the binary.	二进制文件的输出路径。
+Path mapping	路径映射
+Path mappings.	路径映射。
+Path to a custom Chrome user profile (browser debugging)	自定义 Chrome 用户配置的路径（浏览器调试）
+Path to a file containing environment variable definitions	包含环境变量定义的文件的路径
+Path to core dump file (for 'core' mode).	core dump 文件的路径（用于 'core' 模式）。
+Path to source on remote machine.	远程机器上源码的路径。
+Path to the local directory containing the program	包含该程序的本地目录路径
+Path to the program folder or file to debug.	要调试的程序文件夹或文件的路径。
+Path to the program or file to debug	要调试的程序或文件的路径
+Path to the program to debug or attach to	要调试或附加的程序的路径
+Path to the remote directory containing the program	包含该程序的远程目录路径
+Port to connect to.	要连接的端口。
+Port to listen on.	要监听的端口。
+Process ID to attach to.	要附加的进程 ID。
+Process id to attach to	要附加的进程 id
+Process name to attach to.	要附加的进程名称。
+Program arguments	程序参数
+Program working directory	程序工作目录
+Python Debug Console	Python 调试控制台
+Redirect output.	重定向输出。
+Remote source root.	远程源码根目录。
+Request to attach to an existing process	请求附加到已有进程
+Request to launch a new process	请求启动新进程
+Restart session after Node.js has terminated	Node.js 终止后重启会话
+Retry for this number of milliseconds to connect to the debug adapter	连接调试适配器的重试毫秒数
+Running debug program under elevated permissions (on Unix).	以提权方式运行调试程序（Unix 上）。
+Show global package variables in variables pane.	在变量面板中显示全局包变量。
+Show register variables in variables pane.	在变量面板中显示寄存器变量。
+Show return value of functions when stepping.	单步执行时显示函数的返回值。
+Source path remapping between the build machine and the local machine	构建机与本地机之间的源码路径重映射
+Terminal type to use	要使用的终端类型
+Terminal type to use (compatibility alias of 'terminal')	要使用的终端类型（'terminal' 的兼容别名）
+The absolute local path to be replaced.	要被替换的本地绝对路径。
+The absolute remote path to replace with.	用于替换的远程绝对路径。
+The default evaluator type used for expressions	表达式使用的默认求值器类型
+The program to debug. This corresponds to the GDB 'file' command.	要调试的程序。对应 GDB 的 'file' 命令。
+The type of debug session	调试会话的类型
+Use JavaScript source maps if they exist	如果存在 JavaScript source map 则使用
+Use process picker to select a process.	使用进程选择器来选择进程。
+Wait for source maps to load before setting breakpoints.	设置断点前等待 source map 加载完成。
+Wait for the process to launch (MacOS only)	等待进程启动（仅 macOS）
+Where to launch the debug target	调试目标的启动位置
+Where to launch the debugger.	调试器的启动位置。
+Whether debugging Pyramid applications.	是否调试 Pyramid 应用。
+Whether to enable Sub Process debugging	是否启用子进程调试
+Workspace absolute path to the webserver root	Web 服务器根目录的工作区绝对路径
+Enter passphrase for your Git signing key:	请输入你的 Git 签名密钥口令：
+Could not open output stream	无法打开输出流
+Could not get output mixer	无法获取输出混音器
+Updating Zed...	正在更新 Zed...
+No parent directory	没有上级目录
+Reopen in Dev Container	在开发容器中重新打开
+No organization selected.	未选择组织。
+Component Preview	组件预览
+Component not found	未找到组件
+Find components or usages…	查找组件或用法…
+Launch Toast	弹出 Toast
+Data Display	数据展示
+Ready To Build	已可构建
+Work In Progress	开发中
+Dev servers were removed in Zed 0.157 please upgrade to SSH remoting	Zed 0.157 已移除开发服务器，请升级为 SSH 远程开发
+Server Panic	服务器崩溃
+Too many concurrent connections	并发连接过多
+Create Dev Container	创建开发容器
+No valid dev container definition found in project	项目中未找到有效的开发容器定义
+Not within a valid project	不在有效项目内
+Overwrite Existing Configuration?	要覆盖现有配置吗？
+Select a template	选择模板
+Select features to add	选择要添加的功能
+Create highlight endpoints	创建高亮端点
+Multi-cursor input	多光标输入
+To fold point	到折叠点
+To tab point	到制表位
+OAuth authorization required	需要 OAuth 授权
+Context Server Client	上下文服务器客户端
+Context server request was canceled	上下文服务器请求已取消
+No image path found	未找到图片路径
+Path not found	未找到路径
+Edit Zoom	编辑缩放
+Fit to View	适应窗口
+Start inspector pick mode	启动检查器拾取模式
+Disambiguates elements from the same source location	区分来自同一源码位置的元素
+Reset style	重置样式
+Size of the element's children	该元素子级的大小
+Couldn't install the Zed CLI	无法安装 Zed CLI
+Show me how	教我怎么操作
+User canceled.	用户已取消。
+Not signed in to Zed.	未登录 Zed。
+Zed rejected the credentials for this request.	Zed 拒绝了此请求的凭证。
+Select Language	选择语言
+Select a language…	选择一种语言…
+Select Line Ending	选择行尾符
+Select a line ending…	选择一种行尾符…
+Select a language server command…	选择语言服务器命令…
+Markdown Preview	Markdown 预览
+Show Source	显示源码
+Loading weights	正在加载权重
+Loading draft	正在加载草稿
+Loading projector	正在加载投影器
+Google AI does not support custom tool calls	Google AI 不支持自定义工具调用
+Google AI does not support custom tools	Google AI 不支持自定义工具
+No git repositories found in the project	项目中未找到 Git 仓库
+A worktree creation is already in progress	已有工作树正在创建中
+Worktree creation was canceled	工作树创建已取消
+Fetch all remotes	抓取所有远程
+Operation cancelled by user	操作被用户取消
+Connecting to host timed out	连接主机超时
+Exact line match	完全行匹配
+Final text checks	最终文本检查
+Kept-rate breakdown	保留率明细
+Kept-rate explanation	保留率说明
+Jumps metrics	跳转指标
+Patch structure	补丁结构
+Basic Toast	基础 Toast
+Create PR	创建 PR
+Dismiss Button	关闭按钮
+Update ready to install	更新已就绪，可以安装
+You have outdated settings	你的设置已过时
+Operation completed	操作已完成
+Authorization Successful	授权成功
+Something went wrong. Please try again from Zed.	出了点问题。请回到 Zed 重试。
+You can close this tab and return to Zed.	你可以关闭此标签页并返回 Zed。
+ChatGPT Subscription	ChatGPT 订阅
+Your session has expired. Please sign in again.	你的会话已过期，请重新登录。
+OAuth state mismatch	OAuth 状态不匹配
+OAuth callback was cancelled	OAuth 回调已取消
+All threads	全部线程
+Profiler Window	性能分析窗口
+Open with Zed	用 Zed 打开
+Finding matches...	正在查找匹配项...
+Select a language or	选择一种语言，
+Add Files to .git/info/exclude	将文件添加到 .git/info/exclude
+Add Files to .gitignore	将文件添加到 .gitignore
+Add co-authored-by	添加共同作者
+Add repo to project	将仓库添加到项目
+Ahead and behind remote	领先并落后于远程
+Ahead of remote	领先于远程
+All conflicts marked as resolved	所有冲突已标记为解决
+Amend Tracked	修补已跟踪的提交
+Are you sure you want to discard changes to {}?	确定要放弃对 {} 的更改吗？
+Are you sure you want to restore {}?	确定要恢复 {} 吗？
+Trash {}?	将 {} 移到回收站？
+Are you sure?	确定吗？
+Behind remote	落后于远程
+Cancel Commit Message Generation	取消生成提交信息
+Click to Resolve with Agent	点击用智能体解决
+Collapse Commit Editor	折叠提交编辑器
+Commit Tracked	提交已跟踪的文件
+Commit in progress	提交进行中
+Conflict marked as resolved	冲突已标记为解决
+Conflicts marked as resolved	冲突已标记为解决
+Copy Paths	复制路径
+Copy Relative Paths	复制相对路径
+Copy Tag	复制标签
+Could not determine default branch	无法确定默认分支
+Create Merge Request	创建合并请求
+Create a pull request	创建拉取请求
+Create pull request	创建拉取请求
+Create pull request for branch:	为以下分支创建拉取请求：
+Create a pull request for 'branch' on GitHub by visiting:	请在 GitHub 上访问以下地址，为 'branch' 创建拉取请求：
+Diff View Opened	已打开差异视图
+Discard Changes	放弃更改
+Discard Tracked Changes	放弃已跟踪的更改
+Discard and Trash	放弃并移到回收站
+Discard changes to these files?	要放弃对这些文件的更改吗？
+Enter commit message	输入提交信息
+Enter git ref...	输入 Git 引用...
+Expand Commit Description	展开提交描述
+Expand Commit Editor	展开提交编辑器
+Fetch in Progress…	正在抓取…
+Fetch updates from remote	从远程抓取更新
+Fold Commit Description	折叠提交描述
+Generate Commit Message	生成提交信息
+Generating commit message...	正在生成提交信息...
+Git Modal	Git 对话框
+Go to Next Hunk	跳到下一个代码块
+Go to Previous Hunk	跳到上一个代码块
+Hide Commit Editor	隐藏提交编辑器
+Load File Snapshot	加载文件快照
+Load Full Snapshot	加载完整快照
+Loading Commit History…	正在加载提交历史…
+No Branch	无分支
+No Changes to Commit	没有可提交的更改
+No Remote Upstream	没有远程上游
+No active branch	没有活动分支
+No changes	没有更改
+No commit message	没有提交信息
+No commits yet	尚无提交
+No remote configured for repository	仓库未配置远程
+No repository found	未找到仓库
+No staged changes	没有已暂存的更改
+No staged changes yet	尚无已暂存的更改
+No uncommitted changes	没有未提交的更改
+No unstaged changes	没有未暂存的更改
+Not Ahead or Behind	既不领先也不落后
+Open Commit Modal	打开提交对话框
+Open Diff	打开差异
+Open Diffs	打开差异
+Open File Diff	打开文件差异
+Open File Diffs	打开文件差异
+Open Git Graph	打开 Git 图谱
+Open a directory first	请先打开一个目录
+Open repo in new project	在新项目中打开仓库
+Operation was canceled	操作已取消
+Optionally provide a stash message	可选：填写贮藏信息
+Pick which remote to fetch	选择要抓取的远程
+Pick which remote to push to	选择要推送到的远程
+Publish branch to remote	将分支发布到远程
+Pull in Progress…	正在拉取…
+Push committed changes to remote	将已提交的更改推送到远程
+Push in Progress…	正在推送…
+Re-publish branch to remote	重新将分支发布到远程
+Remote status unknown	远程状态未知
+Remove co-authored-by	移除共同作者
+Restore All Changes	恢复所有更改
+Restore Hunk	恢复代码块
+Restore Selected Hunks	恢复选中的代码块
+Select Base Branch	选择基础分支
+Select a repository...	选择仓库...
+Select as Repository Destination	选为仓库目标位置
+Send all review comments to the Agent panel	将所有评审意见发送到智能体面板
+Send this diff for your last agent to review.	把此差异发送给上一个智能体进行评审。
+Show Changes Only	仅显示更改
+Show Commit Editor	显示提交编辑器
+Show Full File	显示完整文件
+Show this file's full contents at this commit as added.	以此提交作为新增，显示该文件的完整内容。
+Stage All Changes	暂存所有更改
+Stage File	暂存文件
+Stage Hunk	暂存代码块
+Stage Selected Hunks	暂存选中的代码块
+Stage and Go to Next Hunk	暂存并跳到下一个代码块
+Stash All	贮藏全部
+Stash Pop	弹出贮藏
+Stash Staged	贮藏已暂存内容
+Stash Tracked	贮藏已跟踪内容
+Stash has changed, drop aborted	贮藏已变化，已中止删除
+Stash has changed, not applying	贮藏已变化，未应用
+Stash has changed, pop aborted	贮藏已变化，已中止弹出
+Successfully rebased	变基成功
+Switch Active Repository	切换当前仓库
+Switch Branch	切换分支
+Synchronized with remotes	已与远程同步
+Tag name	标签名称
+The footer shown at the bottom of the git panel.	显示在 Git 面板底部的页脚。
+To create a merge request for branch, visit:	要为分支创建合并请求，请访问：
+Toggle Folder	展开/折叠文件夹
+Trash File	将文件移到回收站
+Trash Folder	将文件夹移到回收站
+Trash Untracked Files	将未跟踪文件移到回收站
+Trash these files?	要把这些文件移到回收站吗？
+Uncommitted Changes	未提交的更改
+Unstage All Changes	取消暂存所有更改
+Unstage File	取消暂存文件
+Unstage Hunk	取消暂存代码块
+Unstage Selected Hunks	取消暂存选中的代码块
+Unstage and Go to Next Hunk	取消暂存并跳到下一个代码块
+View Changes	查看更改
+View Commit Diff	查看提交差异
+View File	查看文件
+View File Histories	查看文件历史
+View Files	查看文件
+View Merge Request	查看合并请求
+View Options	查看选项
+View merge request	查看合并请求
+View merge request for branch:	查看分支的合并请求：
+Where would you like to initialize this git repository?	你想在哪里初始化这个 Git 仓库？
+You do not have write access to this project	你对这个项目没有写入权限
+Agent Compaction Completed	智能体压缩已完成
+Allow for this thread	仅允许此会话
+Always allow	始终允许
+Apply code action	应用代码操作
+Asking a question	正在提问
+Attempted to read an image, but this model doesn't support it.	尝试读取图片，但此模型不支持图片。
+Blocked by global default: deny	被全局默认设置拦截：拒绝
+Can't create file	无法创建文件
+Can't create file: incorrect path	无法创建文件：路径不正确
+Can't create file: parent directory doesn't exist	无法创建文件：上级目录不存在
+Can't create file: parent is not a directory	无法创建文件：上级不是目录
+Can't edit file: path is a directory	无法编辑文件：路径是目录
+Can't edit file: path not found	无法编辑文件：未找到路径
+Can't write to file: path is a directory	无法写入文件：路径是目录
+Check project diagnostics	检查项目诊断
+Choose an option	选择一个选项
+Command executed successfully.	命令执行成功。
+Command terminated unexpectedly. No output was captured.	命令意外终止，未捕获到任何输出。
+Compaction produced an empty summary	压缩产生了空摘要
+Context server not found	未找到上下文服务器
+Context server not initialized	上下文服务器未初始化
+Continue where you left off	从上次中断处继续
+Copy cancelled by user	复制已被用户取消
+Copy path	复制路径
+Could not select a Linux Zed release for WSL sandboxing	无法为 WSL 沙箱选择 Linux 版 Zed 发行包
+Create directory	创建目录
+Create directory cancelled by user	创建目录已被用户取消
+Create thread	新建会话
+Create worktree	创建工作树
+Creating sibling threads is not supported in this environment	此环境不支持创建兄弟会话
+Delete cancelled by user	删除已被用户取消
+Delete path	删除路径
+Diagnostics cancelled by user	诊断已被用户取消
+Diagnostics successfully refreshed.	诊断已成功刷新。
+Duplicate tool name in tools! macro	tools! 宏中存在重复的工具名
+Editing file	正在编辑文件
+Extract to function	提取为函数
+Fetch cancelled by user	抓取已被用户取消
+File read cancelled by user	读取文件已被用户取消
+Find paths	查找路径
+Find references	查找引用
+Get code actions	获取代码操作
+Go to definition	跳转到定义
+List agents and models	列出智能体与模型
+List directory	列出目录
+Listing available agents is not supported in this environment	此环境不支持列出可用智能体
+MCP tool cancelled by user	MCP 工具已被用户取消
+Message not found	未找到消息
+Move cancelled by user	移动已被用户取消
+Move path	移动路径
+Native agent does not support this content block variant	原生智能体不支持此内容块类型
+Native agent does not support this embedded resource variant	原生智能体不支持此嵌入资源类型
+No code actions available. Call get_code_actions first.	没有可用的代码操作。请先调用 get_code_actions。
+No edits were made.	未做任何编辑。
+No language found	未找到语言
+No sandbox	无沙箱
+Only this time	仅此一次
+Or type your own answer	或输入你自己的答案
+Path search cancelled by user	路径搜索已被用户取消
+Path to create was outside the project	要创建的路径在项目之外
+Provider not found	未找到服务提供方
+Read file	读取文件
+Rename symbol	重命名符号
+Researching alternatives	正在调研备选方案
+Resuming subagent sessions is not supported	不支持恢复子智能体会话
+Safety filter triggered	触发了安全过滤器
+Search cancelled by user	搜索已被用户取消
+Search with regex	使用正则搜索
+Searching the Web	正在搜索网络
+Spawning agent	正在启动智能体
+The question was dismissed without an answer.	问题被关闭，未作回答。
+The user cancelled the question without answering.	用户取消了该问题，未作回答。
+The user declined to answer the question.	用户拒绝回答该问题。
+The user submitted the form without providing an answer.	用户提交表单时未提供答案。
+This file has unsaved changes and the agent wants to overwrite it.	此文件有未保存的更改，而智能体想要覆盖它。
+Tool canceled by user	工具已被用户取消
+Web search cancelled by user	网络搜索已被用户取消
+Web search is not available.	网络搜索不可用。
+Write cancelled by user	写入已被用户取消
+Writing file	正在写入文件
+Your answer	你的答案
+ACP Registry	ACP 注册表
+Accept Generation	接受生成
+Accept Transform	接受转换
+Add Context	添加上下文
+Add a prompt…	添加提示词…
+Agent Changes Rejected	智能体更改已拒绝
+Agent Profiles	智能体配置
+All Options	全部选项
+All domains (unrestricted)	所有域名（不受限制）
+All paths except protected Git metadata	除受保护的 Git 元数据外的所有路径
+Allowed for this thread:	此会话允许：
+Already rated this completion	已为此补全评分
+Bad Result	结果不佳
+Can't rate, still generating...	正在生成，无法评分...
+Cancel Restore	取消恢复
+Changes will be discarded	更改将被丢弃
+Changes won't be discarded	更改不会被丢弃
+Chat about anything with no tools.	在无工具的情况下畅聊任何话题。
+Chat about your codebase.	聊聊你的代码库。
+Clear Search	清除搜索
+Click to copy rating ID	点击复制评分 ID
+Close Assistant	关闭助手
+Configure MCP Server	配置 MCP 服务器
+Connected to the remote environment	已连接到远程环境
+Connecting Server…	正在连接服务器…
+Continuing without it. Other integrations are still available.	将继续而不使用它。其他集成仍然可用。
+Continuing without it. Repeated notices are shown as separate events.	将继续而不使用它。重复的通知会显示为独立事件。
+Copy Code	复制代码
+Could not find workspace to import from.	找不到可导入的工作区。
+Defined in your settings:	在你的设置中定义：
+Delete Thread	删除会话
+Did not find any workspaces to import from.	未找到任何可导入的工作区。
+Disabled for thread	已为此会话禁用
+Disabled in settings	已在设置中禁用
+Dismiss Notice	忽略通知
+Enter client secret (leave empty for public clients)	输入客户端密钥（公共客户端可留空）
+Execute Generated Command	执行生成的命令
+Favorite Model	收藏模型
+Fetching Sessions…	正在获取会话…
+Generating Changes…	正在生成更改…
+Get help to write anything.	获取写作任何内容的帮助。
+Good Result	结果良好
+Images attached by user:	用户附加的图片：
+Import External Agent Threads	导入外部智能体会话
+Imported 1 thread from other channels.	已从其他渠道导入 1 个会话。
+Imported 1 thread.	已导入 1 个会话。
+Indexing resumed	索引已恢复
+Interrupt Generation	中断生成
+Interrupt Transform	中断转换
+Loading registry...	正在加载注册表...
+MCP Server Commands	MCP 服务器命令
+MCP server unavailable	MCP 服务器不可用
+Negative Feedback	负面反馈
+Network Access	网络访问
+Network performance is degraded	网络性能下降
+New Agent Thread	新建智能体会话
+New Profile	新建配置
+Next Alternative	下一个备选方案
+Next Hunk	下一个区块
+No agents available.	没有可用的智能体。
+No agents match your search.	没有匹配你搜索的智能体。
+No changes found in branch diff.	在分支差异中未发现更改。
+No changes to review	没有可审阅的更改
+No configured model	未配置模型
+No diagnostics found.	未找到诊断信息。
+No inline assistant model	无内联助手模型
+No installed agents match your search.	没有匹配你搜索的已安装智能体。
+No installed agents.	没有已安装的智能体。
+No new threads found to import.	未找到可导入的新会话。
+No output available	无可用输出
+No profiles match your search.	没有匹配你搜索的配置。
+No profiles.	没有配置。
+No recent projects found	未找到最近的项目
+No threads	无会话
+No threads found to import.	未找到可导入的会话。
+No threads match your search.	没有匹配你搜索的会话。
+No threads yet.	尚无会话。
+No uninstalled agents match your search.	没有匹配你搜索的未安装智能体。
+No uninstalled agents.	没有未安装的智能体。
+Not Installed	未安装
+Notice stack	通知堆栈
+Overflowing notice stack	溢出通知堆栈
+Past Week	过去一周
+Positive Feedback	正面反馈
+Previous Alternative	上一个备选方案
+Previous Hunk	上一个区块
+Profile name	配置名称
+Responses may take longer than usual.	响应可能比平时更慢。
+Restart Generation	重启生成
+Restart Transform	重启转换
+Review All Files	查看所有文件
+Rules have been migrated to Skills.	规则已迁移到技能。
+Scheduled maintenance	计划维护
+Search agents...	搜索智能体...
+Search all threads…	搜索所有会话…
+Search profiles…	搜索配置…
+Search this thread…	搜索此会话…
+Select a Model	选择模型
+Select an option…	选择一个选项…
+Send Now	立即发送
+Show All Threads	显示所有会话
+Show Only Archived Threads	仅显示已归档会话
+Some tools are disabled. Click to review trust settings.	部分工具已被禁用。点击查看信任设置。
+Start New Agent Thread	新建智能体会话
+Stop This Command	停止此命令
+This Week	本周
+This model does not support images yet	此模型尚不支持图片
+This model does not support tools.	此模型不支持工具。
+Thread mentions are only supported for the native agent	会话提及仅支持原生智能体
+Unfavorite Model	取消收藏模型
+Untitled buffer selection mentions are not supported for paste	不支持粘贴未命名缓冲区选区的提及
+Using the workspace configuration	使用工作区配置
+View Agent License or Terms of Service	查看智能体许可证或服务条款
+View docs	查看文档
+Visit Agent Repository	访问智能体仓库
+Visit Agent Website	访问智能体网站
+What went wrong? Share your feedback so we can improve.	哪里出了问题？分享你的反馈，帮助我们改进。
+Work will continue without this integration.	将继续运行而不使用此集成。
+You already rated this result	你已为此结果评分
+Your Zed Pro Trial has expired	你的 Zed Pro 试用已到期
+A new version of Zed is available for download.	有新版本的 Zed 可供下载。
+An update is required to continue using Zed AI.	需要更新后才能继续使用 Zed AI。
+Check your network connection and try again.	请检查你的网络连接后重试。
+Clearing old bookmarks	正在清理旧的书签
+Clearing old breakpoints	正在清理旧的断点
+Clearing old panes	正在清理旧的面板
+Clearing old user toolchains	正在清理旧的用户工具链
+Clearing recent navigation history	正在清理最近导航历史
+Click to Close	点击关闭
+Click to close	点击关闭
+Close Only	仅关闭
+Close Without Saving	不保存并关闭
+Copy Description	复制描述
+Copy Message	复制消息
+Could not open file	无法打开文件
+Could not translate the dropped paths into WSL paths	无法将拖入的路径转换为 WSL 路径
+Created Text	新增文本
+Default Text	默认文本
+Deleted Text	删除文本
+Discard Edits	放弃编辑
+Discard all	全部放弃
+Do you want to save changes to the following files?	要保存对以下文件的更改吗？
+Enter a folder to trust	输入要信任的文件夹
+Enter an absolute folder path	输入文件夹的绝对路径
+Folder to trust	要信任的文件夹
+Get remote connection	获取远程连接
+Go Forward	前进
+Headline 1	一级标题
+Headline 2	二级标题
+Headline 3	三级标题
+Headline 4	四级标题
+Headline 5	五级标题
+Headline Sizes	标题层级
+Hide Button	隐藏按钮
+Ignored Text	忽略文本
+Inserting bookmark	正在插入书签
+Inserting recent navigation history	正在插入最近导航历史
+Loading recent navigation history	正在加载最近导航历史
+Locked Tab	已锁定的标签页
+Make Tab Editable	使标签页可编辑
+Make Tab Read-Only	使标签页只读
+Modified Text	修改文本
+More Options	更多选项
+New Welcome Page Opened	已打开新的欢迎页
+No Close	无关闭按钮
+No workspaces found	未找到工作区
+Open Threads Sidebar	打开会话侧边栏
+Open threads sidebar	打开会话侧边栏
+Pane not found	未找到面板
+Placeholder Text	占位文本
+Preparing insertion	正在准备插入
+Read Release Notes	阅读发行说明
+Read-Only Tab	只读标签页
+Release notes for this version are available online.	此版本的发行说明可在线查看。
+Restart Now	立即重启
+Save all	全部保存
+Saving items	正在保存项目
+See docs	查看文档
+Shift-click to Suppress	按住 Shift 点击以屏蔽
+Something went wrong while loading your project.	加载你的项目时出了点问题。
+Splits the pane downward.	将面板向下拆分。
+Splits the pane horizontally.	将面板水平拆分。
+Splits the pane to the left.	将面板向左拆分。
+Splits the pane to the right.	将面板向右拆分。
+Splits the pane upward.	将面板向上拆分。
+Splits the pane vertically.	将面板垂直拆分。
+Status bar	状态栏
+Success Text	成功文本
+Suppress with shift-click	按住 Shift 点击以屏蔽
+Theme Preview	主题预览
+This buffer contains unsaved edits. Do you want to save it?	此缓冲区有未保存的编辑。要保存吗？
+This message can be copied to the clipboard.	此消息可复制到剪贴板。
+This tab is read-only	此标签页为只读
+This will make this tab editable	这将使此标签页变为可编辑
+Trust all projects in the parent folders	信任上级文件夹中的所有项目
+Trust all single files	信任所有单个文件
+Unlock Tab	解锁标签页
+Unrecognized Project	无法识别的项目
+Update Available	有可用更新
+Updating workspace	正在更新工作区
+Welcome back to Zed	欢迎回到 Zed
+Workspace Errors	工作区错误
+Worktree Trust Modal	工作树信任对话框
+Zed needs an xdg-desktop-portal implementation to open files.	Zed 需要 xdg-desktop-portal 实现才能打开文件。
+Argument required	需要参数
+No file name	没有文件名
+Partial buffer write requires file name.	部分写入缓冲区需要文件名。
+Could not connect to neovim process	无法连接到 neovim 进程
+Could not attach to ui	无法附加到界面
+Add to Existing Window	添加到现有窗口
+Allow always	始终允许
+Centered layout related setting (left/right).	居中布局相关设置（左/右）。
+Enforce CRLF	强制使用 CRLF
+Enforce LF	强制使用 LF
+Font weight value between 100 (thin) and 900 (black)	字重值，介于 100（极细）与 900（极粗）之间
+Open a New Window	打开新窗口
+OpenAI-Compatible API	OpenAI 兼容 API
+Prefer CRLF	优先使用 CRLF
+Prefer LF	优先使用 LF
+Errors in user keymap file.	用户键盘映射文件中有错误。
+No action named this.	没有名为该名称的操作。
+No language with this name is installed.	未安装名为该名称的语言。
+Settings file could not be parsed. Fix syntax errors before updating.	无法解析设置文件。请先修正语法错误再更新。
+Add Review	添加评审
+Add Review (drag to select multiple lines)	添加评审（拖拽可选择多行）
+Add a review comment...	添加评审评论...
+Add comment	添加评论
+Copy Permalink to Line	复制指向该行的永久链接
+Enter bookmark label (Optional)	输入书签标签（可选）
+Fold Excerpt	折叠摘录
+Toggle Code Actions	切换代码操作
+Unfold Excerpt	展开摘录
+View File History	查看文件历史
+GNU libc	GNU libc
+Git Commit	Git 提交
+My Language	我的语言
+Update imports for	更新导入：
+Virtual Environment	虚拟环境
+Delete from Recent Tasks	从最近任务中删除
+Find a task, or run a command	查找任务，或运行命令
+Find a task, or run a command in the central pane	在中央面板中查找任务，或运行命令
+Rerun Last Task	重新运行上次任务
+Rerun Without History	重新运行（不记录历史）
+Spawn Oneshot	一次性运行
+Spawn Oneshot Without History	一次性运行（不记录历史）
+Spawn Without History	运行（不记录历史）
+In Progress	进行中
+Authentication required	需要身份验证
+Closing sessions is not supported	不支持关闭会话
+Loading sessions is not supported	不支持加载会话
+Logout is not supported	不支持退出登录
+Resuming sessions is not supported	不支持恢复会话
+Tool call	工具调用
+Waiting for confirmation	正在等待确认
+Cursor Position	光标位置
+Edit History	编辑历史
+Recently Opened Files	最近打开的文件
+Recently Viewed Files	最近查看的文件
+Rejected Patch	已拒绝的补丁
+Uncommitted Diff	未提交的差异
+Update Zed	更新 Zed
+Zed's Edit Predictions	Zed 的编辑预测
+Capture Edit Prediction Example	采集编辑预测示例
+No Diagnostics	无诊断
+No reasoning provided	未提供推理
+Prompt is required	提示词为必填
+Total tokens	总 token 数
+Editable context files	可编辑的上下文文件
+Editable context lines	可编辑的上下文行
+A pattern with that name already exists in this rule list.	此规则列表中已存在同名模式。
+A unique name used to identify this provider.	用于标识此服务提供方的唯一名称。
+All items always have a section header above them	所有项目上方始终显示分组标题
+Hover Popover	悬停弹出层
+No root entry found	未找到根条目
+No settings window found	未找到设置窗口
+No skills available for this context.	此上下文没有可用的技能。
+Zed Predictions	Zed 预测
+Configuration for debug scenarios	调试场景配置
+Debug Configurations	调试配置
+The name of the debug adapter	调试适配器的名称
+The name of the debug configuration	调试配置的名称
+The process ID to be already filled out.	需预先填好的进程 ID。
+Untitled Task	未命名任务
+Add Toolchain	添加工具链
+Could not find worktree	未找到工作树
+Select a toolchain…	选择工具链…
+Edit Prediction Onboarding	编辑预测新手引导
+V4 edit predictions do not support renames	V4 编辑预测不支持重命名
+V4 edit predictions only support modifying existing files	V4 编辑预测仅支持修改已有文件
+V4 edit predictions only support one file	V4 编辑预测一次仅支持一个文件
+Wrong file type	文件类型不正确
+Could not start ReadDirectoryChangesW	无法启动 ReadDirectoryChangesW
+Could not start inotify	无法启动 inotify
+Downloaded conpty nupkg successfully	已成功下载 conpty nupkg
+Handshake after Zed spawn	Zed 启动后的握手
+Handshake before Zed spawn	Zed 启动前的握手
+Sweep Prompt	清理提示
+No matches found	未找到匹配项
